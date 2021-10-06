@@ -1,0 +1,8 @@
+<!--where main pages will load-->
+<router-outlet></router-outlet>
+
+<!--spinner container-->
+<div id="spinner-parent" class="spinner-container" *ngIf="showSpinner">
+    <mat-progress-spinner class="example-margin" [color]="spinnerColor" [mode]="spinnerMode" [value]="spinnerSpeed">
+    </mat-progress-spinner>
+</div>

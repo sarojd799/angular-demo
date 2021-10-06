@@ -1,0 +1,45 @@
+$appBlue: #3f51b5;
+
+
+/* You can add global styles to this file, and also import other style files */
+* {
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+html, body { 
+    height: 100%;
+    font-family: sans-serif;
+}
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+button[disabled],
+a[disabled] {
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+a {
+    text-decoration: none !important;
+    cursor: pointer;
+}
+
+
+
+.mx-0 {
+    margin:0;
+}
+
+
+.flex {
+    display: flex;
+}
+.inline-flex {
+    display: inline-flex;
+}
+.flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

@@ -1,0 +1,30 @@
+Q.What is uni-cast vs multi-cast?
+Ans:Unicasting means that each subscribed observer owns an independent execution of the Observable
+Multicasting basically means that one Observable execution is shared among multiple subscriber.
+
+Each subscription execution is different across all subscribers
+where as in multicast the execution is shared across all subsribers
+
+
+Q. What is a subject?
+An RxJS Subject is a special type of Observable that allows values to be multicasted to many Observers
+
+    import { Subject } from 'rxjs';
+ 
+    const subject = new Subject<number>();
+    
+    subject.subscribe({
+    next: (v) => console.log(`observerA: ${v}`)
+    });
+    subject.subscribe({
+    next: (v) => console.log(`observerB: ${v}`)
+    });
+    
+    subject.next(1);
+    subject.next(2);
+
+    // Logs:
+    // observerA: 1
+    // observerB: 1
+    // observerA: 2
+    // observerB: 2

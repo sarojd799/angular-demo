@@ -1,0 +1,41 @@
+angular Modules:
+
+A module that is decorated with @NgMoudule
+
+1.Feature Modules (independent module of separate business logic)
+2.Root Module (App Module)
+3.Core Modules (Modules provided by angular)
+4.Shared Modules (Reusable component, directives and pipes)
+5.Routing Modules
+
+Advantages of splitting code into modules:
+----------------------------------------
+1.Better code organization
+2.Code reuse
+3.Code maintanance
+4.Performance (Eager or lazy loading)
+
+
+To create a feature module:
+-------------------------
+
+ng g m  employee/ -m app
+
+
+Notes:
+
+Common module is the module which contains basic directives like ngIf, ngClass etc
+Broswer Module imports and re exports common module
+
+Shared module contain other common module which includes components, pipes, directives
+
+Things to consider while creating a shared module:
+------------------------------------------------
+1.Shared module may reexport commonly used modules like (common module or forms module)
+2.Shared modules should not have providers.
+3.Shared modules should not import or reexport modules that have providers.
+4.Shared modules can be imported inside feautre modules that requires it.
+
+ng g m shared/shared --flat
+
+We can export modules from shared module without importing it.

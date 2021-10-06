@@ -1,0 +1,29 @@
+<header class="app-header">
+    <label class="burger-menu mx-0">
+        ANGULAR DEMO
+    </label>
+    <nav class="nav-menu">
+        <ul>
+            <li *ngFor="let menu of topMenuItems">
+                <a *ngIf="menu.path" [routerLink]="menu.path">
+                    {{menu.label}}
+                </a>
+                <a *ngIf="!menu.path && menu.handler" (click)="menu.handler(menu.label)">
+                    {{menu.label}}
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main-content">
+    <div class="left-menu" [class.toggle-left-menu]="showLeftMenu">
+        Left menu
+    </div>
+    <div class="right-section">
+        <router-outlet></router-outlet>
+    </div>
+</main>
+
+<footer class="app-footer flex-center">
+    @author: Saroj Kumar Dash
+</footer>
