@@ -1,0 +1,6 @@
+
+1. Lazy and Eager loading
+2. Admin section with form to register users
+3. crud with spring boot
+4. video call using webRTC (plan to develop logic)
+5. further enhancements

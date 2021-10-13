@@ -2,30 +2,37 @@
 
 /* You can add global styles to this file, and also import other style files */
 * {
-    margin:0;
-    padding:0;
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
     scroll-behavior: smooth;
 }
 
 *::-webkit-scrollbar {
-  width: 3px;
-  height: 20px;;
-}
-*::-webkit-scrollbar-thumb {
-  background: #888;
+    width: 3px;
+    height: 20px;
+    ;
 }
 
-html, body { 
+*::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+html,
+body {
     height: 100%;
     font-family: sans-serif;
 }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
 
 button[disabled],
 a[disabled] {
-  pointer-events: none;
-  cursor: not-allowed;
+    pointer-events: none;
+    cursor: not-allowed;
 }
 
 a {
@@ -36,31 +43,35 @@ a {
 
 
 .mx-0 {
-    margin:0;
+    margin: 0;
 }
 
 
 .flex {
     display: flex;
 }
+
 .inline-flex {
     display: inline-flex;
 }
+
 .flex-center {
     display: flex;
     justify-content: center;
     align-items: center;
 }
+
 .justify-content-space-btwn {
     justify-content: space-between;
 }
 
 /**/
 .width-100 {
-    width:100%;
+    width: 100%;
 }
+
 .height-100 {
-    height:100%;
+    height: 100%;
 }
 
 
@@ -68,7 +79,13 @@ a {
 .mat-form-field-appearance-outline .mat-form-field-outline-start {
     border-left: 3px solid currentColor !important;
 }
+
 .mat-form-field-appearance-outline .mat-form-field-outline-end {
     border-right: 3px solid currentColor !important;
-   
+
+}
+
+
+button:disabled {
+    cursor: not-allowed;
 }

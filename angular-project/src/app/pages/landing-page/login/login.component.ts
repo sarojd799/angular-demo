@@ -1,9 +1,10 @@
-import { Component, OnInit, Output } from '@angular/core';
+import { AfterViewChecked, AfterViewInit, Component, DoCheck, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/services/auth/authentication.service';
 import { SessionService } from 'src/app/services/util/session.service';
 import { ValidationUtils } from 'src/app/services/util/validation.service';
+import { trigger, state, transition, animate, style } from '@angular/animations';
 
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { LOGIN_ERROR_CODES } from './login.const';
@@ -11,33 +12,65 @@ import { EventEmitter } from '@angular/core';
 import { dialogConfig } from '../lading-page-const';
 import { RequiredFieldsMatchers } from 'src/app/services/util/material-form-validators.util';
 import { loginValidations } from '../validation-messages';
+import { debounceTime } from 'rxjs/operators';
+
+import { SocialAuthService } from "angularx-social-login";
+import { GoogleLoginProvider } from "angularx-social-login";
+
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['../landing-page.component.scss']
+  styleUrls: ['../landing-page.component.scss'],
+  animations: [
+    trigger('formVisibilityState', [
+      state("true", style({ opacity: 1 })),
+      state("false", style({ opacity: 0 })),
+      transition('false => true', animate('300ms ease-in')),
+      transition('true => false', animate('100ms ease-in'))
+    ])
+  ]
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, DoCheck {
 
   @Output() onDialogEvent = new EventEmitter();
 
   loginErrorMsg = '';
 
+  currentForm!: string;
+
   loginForm = this.fb.group({
-    username: ['', [ValidationUtils.required]],
-    password: ['', [ValidationUtils.required]],
+    username: ['', [this.validationUtils.required]],
+    password: ['', [this.validationUtils.required]],
   })
 
   loginFormErr: any = {}
 
+  oauthCreds: any = {};
+
+  mounted = "false";
+
   matcher = new RequiredFieldsMatchers();
 
+  ngDoCheck() {
+    this.mounted = 'true';
+  }
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private _session: SessionService,
     private _auth: AuthenticationService,
-    private _snackBar: MatSnackBar) { }
+    private _snackBar: MatSnackBar,
+    private validationUtils: ValidationUtils,
+    private _socialAuth: SocialAuthService) { }
+
+
+  signInWithGoogle(): void {
+    try {
+      this._socialAuth.signIn(GoogleLoginProvider.PROVIDER_ID);
+    } catch (err) {
+      console.log(err)
+    }
+  }
 
   authenticate(payload: any) {
     this._auth.loginUser(payload).subscribe(res => {
@@ -46,7 +79,7 @@ export class LoginComponent implements OnInit {
         this.loginErrorMsg = 'Invalid username or password';
       } else {
         this.onDialogEvent.emit('CLOSE');
-        this._session.saveUserCredentials(payload);
+        this._auth.saveUserCredentials(res.token);
         this.router.navigate(['home', 'student'])
         this._snackBar.open(`Welcome ${payload.username}`, undefined, dialogConfig);
       }
@@ -55,10 +88,26 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.registerFormValChangeListener();
+    this.checkForExistingOAuth();
   }
 
   registerFormValChangeListener() {
-    this.loginForm.valueChanges.subscribe(val => this.checkLoginValidationErrors(this.loginForm))
+    this.loginForm.valueChanges.pipe(debounceTime(300)).subscribe(val => this.checkLoginValidationErrors(this.loginForm))
+  }
+
+  registerOAuthStateListener() {
+    this._socialAuth.authState.subscribe((res: any) => {
+      this.oauthCreds = res;
+      console.log({ res })
+    }, (err) => {
+      console.error(err);
+    }, () => console.log('completed'));
+  }
+
+  checkForExistingOAuth() {
+    if (this._socialAuth) {
+      console.log({ auth: this._socialAuth })
+    }
   }
 
 

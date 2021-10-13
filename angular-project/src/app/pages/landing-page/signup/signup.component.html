@@ -1,5 +1,5 @@
 <!--signup-form-->
-<div class="signup-form">
+<div class="signup-form" [@formVisibilityState]="mounted">
     <form [formGroup]="signupForm" (ngSubmit)="validateRegisteration(signupForm)">
         <h3 class="text-center">
             Register User
@@ -17,6 +17,9 @@
                 <input matInput autofocus="false" formControlName="email" name="email" placeholder="Enter email"
                     autocomplete="off" [errorStateMatcher]="matcher" spellcheck="false">
                 <mat-icon matSuffix>email</mat-icon>
+                <mat-error *ngIf="signupForm.get('email')?.errors && signupForm.get('email')?.errors?.emailExists">
+                    Another user with same email exists
+                </mat-error>
                 <mat-error *ngIf="signUpFormErr.email">
                     {{signUpFormErr.email}}
                 </mat-error>
@@ -46,7 +49,7 @@
                 </mat-form-field>
             </div>
         </div>
-        <div class="form-group form-btns-container">
+        <div class="form-group form-submit-btns-container">
             <button type="submit" class="btn btn-success btn-bar btn-sm login-btn">
                 SIGNUP
             </button>

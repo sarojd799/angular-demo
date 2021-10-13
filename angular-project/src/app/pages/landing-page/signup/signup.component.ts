@@ -1,15 +1,25 @@
-import { Component, EventEmitter, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { AfterContentInit, Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { debounceTime } from 'rxjs/operators';
 import { RequiredFieldsMatchers } from 'src/app/services/util/material-form-validators.util';
 import { ValidationUtils } from 'src/app/services/util/validation.service';
 import { signupValidationMsg } from '../validation-messages';
+import { trigger, state, transition, animate, style } from '@angular/animations';
 
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
   styleUrls: ['../landing-page.component.scss'],
+  animations: [
+    trigger('formVisibilityState', [
+      state("true", style({ opacity: 1 })),
+      state("false", style({ opacity: 0 })),
+      transition('false => true', animate('200ms ease-in')),
+      transition('true => false', animate('100ms ease-in'))
+    ])
+  ]
 })
-export class SignUpComponent implements OnInit {
+export class SignUpComponent implements OnInit, AfterContentInit {
 
   @Output() onDialogEvent = new EventEmitter();
 
@@ -23,23 +33,39 @@ export class SignUpComponent implements OnInit {
 
   formSubmitted = false;
 
-  constructor(private fb: FormBuilder) { }
+  mounted = 'false'
+
+  constructor(
+    private fb: FormBuilder,
+    private validationUtils: ValidationUtils
+  ) { }
+
+  ngAfterContentInit() {
+    this.mounted = 'true'
+  }
 
   ngOnInit() {
     this.registerFormValListener();
   }
 
   signupForm = this.fb.group({
-    email: ['', [ValidationUtils.required, ValidationUtils.validEmail]],
+    email: [
+      '',
+      {
+        validators: [this.validationUtils.required, this.validationUtils.validEmail],
+        asyncValidators: [this.validationUtils.asyncEmailValidate],
+        upateOn: 'change'
+      }
+    ],
     passwordGroup: this.fb.group({
-      password: ['', [ValidationUtils.required]],
-      confirmPassword: ['', [ValidationUtils.required]]
-    }, { validators: ValidationUtils.crossValidate })
+      password: ['', [this.validationUtils.required]],
+      confirmPassword: ['', [this.validationUtils.required]]
+    }, { validators: this.validationUtils.crossValidate })
   })
 
 
   registerFormValListener() {
-    this.signupForm.valueChanges.subscribe(v => this.validateRegisterForm(this.signupForm))
+    this.signupForm.valueChanges.pipe(debounceTime(300)).subscribe(v => this.validateRegisterForm(this.signupForm))
   }
 
   validateRegisterForm(signupForm: FormGroup, event = '') {
@@ -63,6 +89,7 @@ export class SignUpComponent implements OnInit {
         this.validateRegisterForm(control, event);
       }
     })
+    console.log({ err: this.signUpFormErr })
   }
 
   switchForms() {

@@ -15,7 +15,8 @@
 </div>
 
 <ng-template #formsContainer>
-    <app-login *ngIf="currentForm==='login'" (onDialogEvent)="handleDialogEvent($event)"></app-login>
+    <app-login *ngIf="currentForm==='login'" (onDialogEvent)="handleDialogEvent($event)">
+    </app-login>
 
     <app-signup *ngIf="currentForm==='signup'" (onDialogEvent)="handleDialogEvent($event)"></app-signup>
 </ng-template>

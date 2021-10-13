@@ -1,4 +1,4 @@
-<div class="login-form">
+<div class="login-form" [@formVisibilityState]="mounted">
     <form [formGroup]="loginForm" (ngSubmit)="validateLoginForm(loginForm)">
         <h3 class="text-center">
             User Login
@@ -24,13 +24,20 @@
             </div>
         </div>
         <div class="form-group">
-            <div class="input-container">
+            <div class="input-container password-field">
                 <mat-form-field appearance="outline">
-                    <mat-label>Password</mat-label>
-                    <input type="password" matInput formControlName="password" name="loginUser"
+                    <mat-label>
+                        Password
+                    </mat-label>
+                    <input #password type="password" matInput formControlName="password" name="loginUser"
                         [errorStateMatcher]="matcher" placeholder="Enter username" autocomplete="off"
                         spellcheck="false">
-                    <mat-icon matSuffix>lock</mat-icon>
+                    <mat-icon matSuffix *ngIf="password.type === 'password'" (click)="password.type='text'">
+                        visibility_off
+                    </mat-icon>
+                    <mat-icon matSuffix *ngIf="password.type === 'text'" (click)="password.type = 'password'">
+                        visibility_off
+                    </mat-icon>
                     <mat-error *ngIf="loginFormErr.password">
                         {{loginFormErr.password}}
                     </mat-error>
@@ -44,7 +51,7 @@
                 </mat-checkbox>
             </div>
         </div>
-        <div class="form-group form-btns-container">
+        <div class="form-group form-submit-btns-container">
             <button type="submit" class="btn btn-primary btn-bar btn-sm login-btn">
                 LOGIN
             </button>
@@ -52,14 +59,24 @@
                 CANCEL
             </button>
         </div>
-        <div class="form-group">
-            <p class="flex-center">
-                New member? &nbsp;
-                <a class="signup" (click)="switchForms()">
-                    Click here&nbsp;
-                </a>
-                to signup
-            </p>
-        </div>
     </form>
+    <div class="h6 oauth-btns-container">
+        <button type="button" class="btn btn-block google text-nowrap" (click)="signInWithGoogle()">
+            <span class="fa fa-google"></span>
+            &nbsp;&nbsp;Google login
+        </button>
+        <button disabled type="button" class="btn btn-block facebook text-nowrap" (click)="signInWithGoogle()">
+            <span class="fa fa-facebook"></span>
+            &nbsp;&nbsp;Facebook login
+        </button>
+    </div>
+    <div class="form-group">
+        <p class="flex-center">
+            New member? &nbsp;
+            <a class="signup" (click)="switchForms()">
+                Click here&nbsp;
+            </a>
+            to signup
+        </p>
+    </div>
 </div>

@@ -6,10 +6,6 @@ export class SessionService {
 
   persistenceKey = 'angularApp';
 
-  saveUserCredentials(authDTO: BasicAuthType) {
-    this.addItem(this.authKey, authDTO);
-  }
-
   clearCredentials() {
     if (!this.storage) this.initStorage();
     let sessionData = this.storage[this.persistenceKey];
@@ -33,7 +29,7 @@ export class SessionService {
     let data = this.storage[this.persistenceKey];
     if (!data) this.initStorage();
     data = JSON.parse(this.storage[this.persistenceKey]);
-    data[`${key}`] = JSON.stringify(value);
+    data[`${key}`] = (typeof value !== 'string') ? JSON.stringify(value) : value;
     this.storage[this.persistenceKey] = JSON.stringify(data);
   }
 

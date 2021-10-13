@@ -1,7 +1,8 @@
 
 const loginValidations = {
     username: {
-        missingVal: 'Username is required!'
+        missingVal: 'Username is required!',
+        emailExists: 'Another user with same email exists.'
     },
     password: {
         missingVal: 'Password is required'

@@ -1,7 +1,6 @@
-import { Component, ElementRef, TemplateRef, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 
 /*-Angular-Animations-*/
-import { trigger, state, transition, animate, style } from '@angular/animations';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ComponentType } from '@angular/cdk/overlay';
 
