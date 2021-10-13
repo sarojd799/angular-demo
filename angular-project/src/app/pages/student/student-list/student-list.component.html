@@ -1,4 +1,66 @@
-<P>
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum facilis fugiat dicta voluptatem facere qui tempore.
-    Voluptas, rem dolores harum, numquam excepturi sunt magni ut, quos blanditiis suscipit at omnis.
-</P>
+<div class="student-list-container width-100">
+    <div class="student-list-page">
+        <div class="student-list-table-container">
+            <div class="search-table">
+                <mat-form-field appearance="standard">
+                    <mat-label>Filter</mat-label>
+                    <input matInput placeholder="Enter keywords to search in table" #input>
+                </mat-form-field>
+            </div>
+            <!--table start-->
+            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+
+                <!-- Position Column -->
+                <ng-container matColumnDef="slno">
+                    <th mat-header-cell *matHeaderCellDef> sl no</th>
+                    <td mat-cell *matCellDef="let i=index"> {{i+ 1}} </td>
+                </ng-container>
+
+                <!-- Name Column -->
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef> Name </th>
+                    <td mat-cell *matCellDef="let rec">
+                        {{rec.firstName+ ((rec.middleName)?' '+rec.middleName:'')+ ' '+rec.lastName}}
+                    </td>
+                </ng-container>
+
+                <!-- Weight Column -->
+                <ng-container matColumnDef="gender">
+                    <th mat-header-cell *matHeaderCellDef> Gender </th>
+                    <td mat-cell *matCellDef="let element"> {{element.gender}} </td>
+                </ng-container>
+
+                <!-- Symbol Column -->
+                <ng-container matColumnDef="email">
+                    <th mat-header-cell *matHeaderCellDef> Emaili </th>
+                    <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="phone">
+                    <th mat-header-cell *matHeaderCellDef> Phone </th>
+                    <td mat-cell *matCellDef="let element"> {{element.phone}} </td>
+                </ng-container>
+
+                <!--action-->
+                <ng-container matColumnDef="action">
+                    <th mat-header-cell *matHeaderCellDef>Action</th>
+                    <td mat-cell *matCellDef="let element">
+                        <button mat-raised-button color="primary" class="edit-btn btn">
+                            <mat-icon>edit</mat-icon>
+                            &nbsp;Edit
+                        </button>
+                        <button mat-raised-button color="warn" class="edit-btn btn">
+                            <mat-icon>delete</mat-icon>
+                            &nbsp;Delete
+                        </button>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+            <!--table end-->
+        </div>
+    </div>
+</div>

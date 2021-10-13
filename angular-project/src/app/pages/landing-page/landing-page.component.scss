@@ -1,0 +1,152 @@
+@import url('https://fonts.googleapis.com/css2?family=Righteous&display=swap');
+
+.landing-page {
+    background-image: url('/assets/background.png');
+    height: 100%;
+    width: 100%;
+    background-size: cover;
+    position: relative;
+    display: flex;
+    overflow-y: auto;
+}
+
+.landing-page-message p {
+    font-size: 45px;
+    font-family: 'Righteous', cursive;
+    line-height: 50px;
+    color: white;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    line-height: 2.3rem;
+}
+
+.landing-page-message button,
+.landing-page-message button:active {
+    box-shadow: #4350b1 0px 5px 15px;
+    border-color: #4350b1;
+    background-color: #4350b1;
+    border-radius: 31px;
+    padding: 0.5rem 1rem;
+    font-size: 18px;
+    letter-spacing: 2px;
+    margin-top: 1rem;
+}
+
+
+.login-form,
+.signup-form {
+    min-width: 12rem;
+    padding: 1rem;
+    min-height: 18rem;
+}
+
+.login-form .mat-form-field,
+.signup-form .mat-form-field {
+    width: 100%;
+}
+
+.login-form [type="submit"],
+.signup-form [type="submit"] {
+    width: 48%;
+    margin-right: 5px;
+}
+
+.login-form .form-group:nth-child(5),
+.signup-form .form-group:nth-child(5) {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.login-form button,
+.signup-form button {
+    flex: 1;
+    font-size: 16px;
+    letter-spacing: 1px;
+    min-width: 45%;
+}
+
+.login-form .btn-default,
+.signup-form .btn-default {
+    border: 1px solid lightgray;
+    margin-left: 10px;
+}
+
+.login-form .form-group:not(:nth-child(5)),
+.signup-form .form-group:not(:nth-child(5)) {
+    margin-bottom: 0;
+}
+
+.login-error.alert {
+    align-items: center;
+    white-space: nowrap;
+    padding: 11px 14px;
+    font-size: 12px;
+    margin-bottom: 1rem !important;
+}
+
+.login-error.alert .close {
+    font-size: 12px;
+}
+
+.login-form .form-group:last-of-type p,
+.signup-form .form-group:last-of-type p {
+    margin-top: 1rem;
+}
+
+.login-form .form-btns-container {
+    margin-top: 10px;
+    margin-bottom: 0;
+}
+
+.signup-form .form-btns-container {
+    margin-top: 15px;
+    margin-bottom: 0;
+}
+
+.login-form .remember-me {
+    padding-top: 10px;
+}
+
+@media only screen and (min-width: 1200px) {
+    .landing-page {
+        padding-left: 7rem;
+        align-items: center;
+    }
+}
+
+@media only screen and (max-width:600px) {
+
+    .login-form,
+    .signup-form {
+        min-height: 20rem;
+    }
+
+    .landing-page {
+        background-position: 77% 0%;
+        background-size: 300% 100%;
+        background-repeat: no-repeat;
+        position: relative;
+    }
+
+    .landing-page-message {
+        padding: 1rem;
+        text-align: right;
+        width: 100%;
+    }
+
+    .landing-page-message p {
+        font-size: 30px;
+        line-height: 5vh;
+    }
+
+    .landing-page-message button {
+        position: absolute;
+        bottom: 10%;
+        right: 50%;
+        transform: translateX(50%);
+        min-width: 70vw;
+        height: 8vh;
+        max-width: 70vw;
+    }
+}

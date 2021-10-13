@@ -6,6 +6,8 @@ import { StudentRoutingModule } from './student-routing.module';
 
 
 
+
+
 @NgModule({
   declarations: [
     CreateStudentComponent,
@@ -13,7 +15,8 @@ import { StudentRoutingModule } from './student-routing.module';
   ],
   imports: [
     SharedModule,
-    StudentRoutingModule
+    StudentRoutingModule,
+
   ],
   exports: [
     StudentRoutingModule

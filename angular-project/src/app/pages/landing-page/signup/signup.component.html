@@ -1,0 +1,67 @@
+<!--signup-form-->
+<div class="signup-form">
+    <form [formGroup]="signupForm" (ngSubmit)="validateRegisteration(signupForm)">
+        <h3 class="text-center">
+            Register User
+        </h3>
+        <div (click)="signUpAsyncErr = ''" class="login-error alert alert-danger h6 flex justify-content-space-btwn"
+            *ngIf="signUpAsyncErr">
+            {{signUpAsyncErr}}
+            <span class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </span>
+        </div>
+        <div class="form-group">
+            <mat-form-field appearance="outline">
+                <mat-label>Email</mat-label>
+                <input matInput autofocus="false" formControlName="email" name="email" placeholder="Enter email"
+                    autocomplete="off" [errorStateMatcher]="matcher" spellcheck="false">
+                <mat-icon matSuffix>email</mat-icon>
+                <mat-error *ngIf="signUpFormErr.email">
+                    {{signUpFormErr.email}}
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div formGroupName="passwordGroup">
+            <div class="form-group">
+                <mat-form-field appearance="outline">
+                    <mat-label>Password</mat-label>
+                    <input matInput [errorStateMatcher]="matcher" formControlName="password" name="password"
+                        placeholder="Enter password" autocomplete="off">
+                    <mat-icon matSuffix>lock</mat-icon>
+                    <mat-error *ngIf="signUpFormErr.password">
+                        {{signUpFormErr.password}}
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="form-group">
+                <mat-form-field appearance="outline">
+                    <mat-label>Confirm Password</mat-label>
+                    <input matInput formControlName="confirmPassword" [errorStateMatcher]="matcher"
+                        name="confirmPassword" placeholder="Enter confirm password" autocomplete="off">
+                    <mat-icon matSuffix>lock</mat-icon>
+                    <mat-error *ngIf="signUpFormErr.confirmPassword || signUpFormErr.passwordGroup">
+                        {{signUpFormErr.confirmPassword || signUpFormErr.passwordGroup}}
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="form-group form-btns-container">
+            <button type="submit" class="btn btn-success btn-bar btn-sm login-btn">
+                SIGNUP
+            </button>
+            <button type="button" mat-dialog-close class="btn btn-default btn-bar btn-sm login-btn">
+                CLOSE
+            </button>
+        </div>
+        <div class="form-group">
+            <p class="flex-center">
+                Already a member? &nbsp;
+                <a class="signup" (click)="switchForms()">
+                    Click here&nbsp;
+                </a>
+                to login
+            </p>
+        </div>
+    </form>
+</div>

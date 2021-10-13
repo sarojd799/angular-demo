@@ -3,7 +3,10 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  timeout: 120000,
+  baseURI: 'http://localhost:8080'
+
 };
 
 /*

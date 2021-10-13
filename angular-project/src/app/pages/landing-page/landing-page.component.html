@@ -1,0 +1,21 @@
+<div class="landing-page">
+    <div class="landing-page-container flex">
+    </div>
+    <div class="landing-page-message">
+        <p>
+            Angular crud <br />
+            example <br />
+            with <br />
+            spring boot
+        </p>
+        <button type="button" class="btn btn-primary dialog-btn" (click)="showLoginDialog()">
+            CHECK OUT HERE
+        </button>
+    </div>
+</div>
+
+<ng-template #formsContainer>
+    <app-login *ngIf="currentForm==='login'" (onDialogEvent)="handleDialogEvent($event)"></app-login>
+
+    <app-signup *ngIf="currentForm==='signup'" (onDialogEvent)="handleDialogEvent($event)"></app-signup>
+</ng-template>

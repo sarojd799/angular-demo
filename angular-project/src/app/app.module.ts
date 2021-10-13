@@ -12,8 +12,13 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { AuthGuard } from './services/route-guards/auth.guard';
 import { UnauthorizedComponent } from './pages/unauthorized/unauthorized.component';
 import { ContainerComponent } from './pages/container/container.component';
-import { LoginModule } from './pages/login/login.module';
+import { LandingPageModule } from './pages/landing-page/landing-page.module';
 import { SessionService } from './services/util/session.service';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthenticationService } from './services/auth/authentication.service';
+import { AJAXInterceptorService } from './services/interceptors/ajaxinterceptor.service';
+
+
 
 @NgModule({
   declarations: [
@@ -26,14 +31,18 @@ import { SessionService } from './services/util/session.service';
     BrowserModule,
     BrowserAnimationsModule,
     StudentModule,
-    LoginModule,
+    LandingPageModule,
     RouterModule,
     AppRoutingModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    HttpClientModule
   ],
   providers: [
     AuthGuard,
-    SessionService
+    SessionService,
+    AuthenticationService,
+    { provide: HTTP_INTERCEPTORS, useClass: AJAXInterceptorService, multi: true }
+
   ],
   bootstrap: [AppComponent]
 })

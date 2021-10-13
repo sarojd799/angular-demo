@@ -1,5 +1,4 @@
-$appBlue: #3f51b5;
-
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
 /* You can add global styles to this file, and also import other style files */
 * {
@@ -8,6 +7,15 @@ $appBlue: #3f51b5;
     box-sizing: border-box;
     scroll-behavior: smooth;
 }
+
+*::-webkit-scrollbar {
+  width: 3px;
+  height: 20px;;
+}
+*::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
 html, body { 
     height: 100%;
     font-family: sans-serif;
@@ -42,4 +50,25 @@ a {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+.justify-content-space-btwn {
+    justify-content: space-between;
+}
+
+/**/
+.width-100 {
+    width:100%;
+}
+.height-100 {
+    height:100%;
+}
+
+
+/*material*/
+.mat-form-field-appearance-outline .mat-form-field-outline-start {
+    border-left: 3px solid currentColor !important;
+}
+.mat-form-field-appearance-outline .mat-form-field-outline-end {
+    border-right: 3px solid currentColor !important;
+   
 }

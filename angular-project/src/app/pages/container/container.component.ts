@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthenticationService } from 'src/app/services/auth/authentication.service';
 
 @Component({
   selector: 'app-container',
@@ -20,13 +21,13 @@ export class ContainerComponent {
     return nav;
   });
 
-  constructor() { }
+  constructor(private _auth: AuthenticationService) { }
 
   handleAction(label: String) {
     if (label === 'Projects') {
       this.showLeftMenu = !!!this.showLeftMenu;
     } else if (label === 'Logout') {
-
+      this._auth.logOutUser();
     }
 
   }
