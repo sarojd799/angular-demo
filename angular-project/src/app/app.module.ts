@@ -3,7 +3,6 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { StudentModule } from './pages/student/student.module';
 import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
 import { AppRoutingModule } from './app-routing.module';
 import { RouterModule } from '@angular/router';
@@ -11,13 +10,22 @@ import { RouterModule } from '@angular/router';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { AuthGuard } from './services/route-guards/auth.guard';
 import { UnauthorizedComponent } from './pages/unauthorized/unauthorized.component';
-import { ContainerComponent } from './pages/container/container.component';
 import { LandingPageModule } from './pages/landing-page/landing-page.module';
 import { SessionService } from './services/util/session.service';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthenticationService } from './services/auth/authentication.service';
 import { AJAXInterceptorService } from './services/interceptors/ajaxinterceptor.service';
+import { AdminModule } from './pages/admin/admin.module';
 
+import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
+import { IdleManagerService } from './services/util/idle-manager';
+import { ChatModule } from './pages/chat-screen/chat.module';
+import { ContainerModule } from './pages/container/container.module';
+import { HomeModule } from './pages/home/home.module';
+import { SearchResultModule } from './pages/search-result/search-result.module';
+import { EditProfileModule } from './pages/edit-profile/edit-profile.module';
+import { WebSocketUtils } from './services/util/web-socket.service';
+import HTMLUtils from './services/util/htmlUtils';
 
 
 @NgModule({
@@ -25,25 +33,39 @@ import { AJAXInterceptorService } from './services/interceptors/ajaxinterceptor.
     AppComponent,
     PageNotFoundComponent,
     UnauthorizedComponent,
-    ContainerComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    StudentModule,
     LandingPageModule,
     RouterModule,
-    AppRoutingModule,
     MatProgressSpinnerModule,
-    HttpClientModule
+    HttpClientModule,
+
+    //Feature-modules-start
+    ChatModule,
+    AdminModule,
+    HomeModule,
+    SearchResultModule,
+    EditProfileModule,
+    ContainerModule,
+    //Feature-modules-end
+    AppRoutingModule,
+    NgIdleKeepaliveModule.forRoot()
   ],
   providers: [
     AuthGuard,
     SessionService,
     AuthenticationService,
-    { provide: HTTP_INTERCEPTORS, useClass: AJAXInterceptorService, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: AJAXInterceptorService, multi: true },
+    IdleManagerService,
+    WebSocketUtils,
+    HTMLUtils
 
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  exports: [
+    AppRoutingModule
+  ]
 })
 export class AppModule { }

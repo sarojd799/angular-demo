@@ -1,29 +1,99 @@
-<header class="app-header">
-    <label class="burger-menu mx-0">
-        ANGULAR DEMO
-    </label>
-    <nav class="nav-menu">
-        <ul>
-            <li *ngFor="let menu of topMenuItems">
-                <a *ngIf="menu.path" [routerLink]="menu.path">
-                    {{menu.label}}
-                </a>
-                <a *ngIf="!menu.path && menu.handler" (click)="menu.handler(menu.label)">
-                    {{menu.label}}
-                </a>
-            </li>
-        </ul>
-    </nav>
-</header>
-<main class="main-content">
-    <div class="left-menu" [class.toggle-left-menu]="showLeftMenu">
-        Left menu
-    </div>
-    <div class="right-section">
-        <router-outlet></router-outlet>
-    </div>
-</main>
+<div class="parent-container">
+    <header class="app-header">
+        <label class="nav-heading-label mx-0" routerLink="/home/posts">
+            Connect
+        </label>
+        <div app-burger-menu class="app-burger-menu" (onBurgerClick)="toggleLeftMenu()"></div>
+        <!--nav-menu-->
+        <nav class="nav-menu user-header-nav">
+            <ul class="nav-list-items__parent">
+                <li routerLink="/home/searchUsers" routerLinkActive="active-header-link">
+                    <mat-icon> search</mat-icon>
+                    <span class="nav-label">Search Users</span>
+                </li>
+                <li routerLink="/home/chat" routerLinkActive="active-header-link">
+                    <mat-icon> chat_bubble_outline</mat-icon>
+                    <span class="badge  badge-secondary">0</span>
+                    <span class="nav-label">Messages</span>
+                </li>
+                <li routerLinkActive="active-header-link">
+                    <mat-icon>notifications_none</mat-icon>
+                    <span class="badge badge-secondary">0</span>
+                </li>
+                <!--dropdown-->
+                <li class="dropdown user-opts-dd" (click)="userOptDropdownToggled = true"
+                    (blur)="userOptDropdownToggled =  false" tabindex="3">
+                    <mat-icon class="user-icon">
+                        account_circle
+                    </mat-icon>
+                    <span class="overflowable-username" [title]="loggedInuser || '...'">
+                        {{loggedInuser || '...'}}
+                    </span>
+                    <ul id="account-options-menu-items__parent" class="list-group" [hidden]="!userOptDropdownToggled">
+                        <li class="list-group-item" role="link" (click)="navigate('/home/profile')">
+                            <mat-icon>account_circle</mat-icon>
+                            Profile
+                        </li>
+                        <li class="list-group-item" logoutLink>
+                            <span class="fa fa-sign-out"></span>
+                            Logout
+                        </li>
+                    </ul>
+                </li>
+                <li class="night-mode-icon" (click)="toggleNightMode()" [class.active]="nightMode">
+                    <mat-icon>brightness_2</mat-icon>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <!--content section-->
+    <main class="main-content">
+        <div class="left-section__parent section" [class.animate]="showLeftMenu">
+            <ng-container [ngTemplateOutlet]="loginMenu"></ng-container>
+        </div>
+        <div class="right-section__parent section">
+            <router-outlet></router-outlet>
+        </div>
+    </main>
+    <!--footer-->
+    <footer class="app-footer flex-center">
+        @author: Saroj Kumar Dash
+    </footer>
+</div>
 
-<footer class="app-footer flex-center">
-    @author: Saroj Kumar Dash
-</footer>
+<ng-template #loginMenu>
+    <ul class="mobile-nav-items__parent">
+        <li class="mob-nav-item" routerLink="/home/searchUsers" routerLinkActive="active-mob-nav">
+            <mat-icon>search</mat-icon>
+            <span class="nav-label">
+                Search Users
+            </span>
+        </li>
+        <li class="mob-nav-item" routerLink="/home/chat" routerLinkActive="active-mob-nav">
+            <mat-icon> chat_bubble_outline</mat-icon>
+            <span class="nav-label">Messages</span>
+        </li>
+        <li class="mob-nav-item">
+            <mat-icon>notifications_none</mat-icon>
+            <span class="nav-label">Notifications</span>
+        </li>
+        <li class="mob-nav-item" routerLink="/home/profile" routerLinkActive="active-mob-nav">
+            <mat-icon>account_circle</mat-icon>
+            <span class="nav-label">
+                Profile
+            </span>
+        </li>
+        <li class="mob-nav-item" routerLink="/home/posts" routerLinkActive="active-mob-nav">
+            <mat-icon>turned_in</mat-icon>
+            <span class="nav-label">
+                Post
+            </span>
+        </li>
+        <li class="mob-nav-item" logoutLink>
+            <mat-icon>meeting_room</mat-icon>
+            <span class="nav-label">
+                Logout
+            </span>
+        </li>
+    </ul>
+</ng-template>

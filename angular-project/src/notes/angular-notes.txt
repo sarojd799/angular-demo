@@ -1,3 +1,17 @@
 
 1.https://stackoverflow.com/questions/43492354/how-to-allow-access-outside-localhost
 Using ng serve --host 0.0.0.0 will allow you to connect to the ng serve using your ip instead of localhost.
+
+
+var inactivityTime = function () {
+    var time;
+    window.onload = resetTimer;
+    // DOM Events
+    document.onmousemove = resetTimer;
+    document.onkeypress = resetTimer;
+
+    function resetTimer() {
+        clearTimeout(time);
+        time = setTimeout(logout, 3000)
+    }
+};

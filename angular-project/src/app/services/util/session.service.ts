@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { BasicAuthType } from 'src/app/types/common.types';
 
 @Injectable({ providedIn: 'root' })
 export class SessionService {
@@ -13,6 +12,11 @@ export class SessionService {
     sessionData = JSON.parse(sessionData);
     delete sessionData[`${this.authKey}`]
     this.storage[this.persistenceKey] = JSON.stringify(sessionData);
+  }
+
+  getUserName() {
+    const auth = this.getItem(this.authKey) || {};
+    return auth.username;
   }
 
   getItem(key: String) {
@@ -29,7 +33,7 @@ export class SessionService {
     let data = this.storage[this.persistenceKey];
     if (!data) this.initStorage();
     data = JSON.parse(this.storage[this.persistenceKey]);
-    data[`${key}`] = (typeof value !== 'string') ? JSON.stringify(value) : value;
+    data[`${key}`] = value;
     this.storage[this.persistenceKey] = JSON.stringify(data);
   }
 
@@ -37,6 +41,6 @@ export class SessionService {
     this.storage[this.persistenceKey] = JSON.stringify({});
   }
 
-  get storage() { return sessionStorage }
+  get storage() { return localStorage }
   get authKey() { return 'Authentication' }
 }

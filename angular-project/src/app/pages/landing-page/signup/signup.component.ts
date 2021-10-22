@@ -5,6 +5,11 @@ import { RequiredFieldsMatchers } from 'src/app/services/util/material-form-vali
 import { ValidationUtils } from 'src/app/services/util/validation.service';
 import { signupValidationMsg } from '../validation-messages';
 import { trigger, state, transition, animate, style } from '@angular/animations';
+import { AuthenticationService } from 'app/services/auth/authentication.service';
+
+//mat
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { dialogConfig } from '../lading-page-const';
 
 @Component({
   selector: 'app-signup',
@@ -37,7 +42,9 @@ export class SignUpComponent implements OnInit, AfterContentInit {
 
   constructor(
     private fb: FormBuilder,
-    private validationUtils: ValidationUtils
+    private validationUtils: ValidationUtils,
+    private _auth: AuthenticationService,
+    private _snackBar: MatSnackBar
   ) { }
 
   ngAfterContentInit() {
@@ -62,7 +69,6 @@ export class SignUpComponent implements OnInit, AfterContentInit {
       confirmPassword: ['', [this.validationUtils.required]]
     }, { validators: this.validationUtils.crossValidate })
   })
-
 
   registerFormValListener() {
     this.signupForm.valueChanges.pipe(debounceTime(300)).subscribe(v => this.validateRegisterForm(this.signupForm))
@@ -89,7 +95,6 @@ export class SignUpComponent implements OnInit, AfterContentInit {
         this.validateRegisterForm(control, event);
       }
     })
-    console.log({ err: this.signUpFormErr })
   }
 
   switchForms() {
@@ -105,9 +110,25 @@ export class SignUpComponent implements OnInit, AfterContentInit {
     if (signupForm.invalid) {
       this.validateRegisterForm(signupForm, 'submit');
     } else {
-      console.log('User registered')
-      alert('User registered.')
+      const payload = {
+        username: this.username?.value,
+        password: this.password?.value
+      }
+      this._auth.registerNewUser(payload).subscribe((res: any) => {
+        if (res && res.email) {
+          this._snackBar.open("Registeration successfull", undefined, dialogConfig)
+          this.signupForm.reset();
+          this.signupForm.markAsPristine();
+          this.signupForm.markAsUntouched();
+          this.signUpFormErr = {};
+        } else {
+          this._snackBar.open("Error occurred while registering user.", undefined, dialogConfig)
+        }
+      }, () => this._snackBar.open("Error occurred while registering user.", undefined, dialogConfig))
     }
-
   }
+
+
+  get username() { return this.signupForm.get('email') }
+  get password() { return this.signupForm.get('passwordGroup')?.get('password') }
 }

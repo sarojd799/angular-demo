@@ -1,0 +1,33 @@
+.search-container {
+    display: flex;
+    background-color: #fff;
+    border-radius: 2rem;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 1rem;
+
+    .form-control {
+        border-radius: 1.5rem;
+        padding: 1rem;
+        flex: 85%;
+        box-shadow: none;
+        font-size: 0.9rem;
+        letter-spacing: 0.065rem;
+        padding-left: 1.5rem;
+        outline: none;
+        border: none;
+        width: 12rem;
+        transition: all 1s ease-in-out;
+
+        &:focus,
+        &.animate-width {
+            width: 18rem !important;
+        }
+    }
+
+    .mat-icon {
+        flex: 1;
+        border: none;
+        cursor: pointer;
+    }
+}

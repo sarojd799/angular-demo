@@ -1,0 +1,36 @@
+.page-not-found-container {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.page-not-found-container p {
+    font-weight: 400;
+    letter-spacing: 1px;
+    font-family: sans-serif;
+    text-align: center;
+    font-size: 18px;
+    margin: 2rem 0;
+}
+
+.page-not-found-img-box img {
+    max-height: 12rem;
+    max-width: 100%;
+}
+
+.page-not-found-container a {
+    color: #007bff !important;
+}
+
+@media only screen and (max-width:600px) {
+    .page-not-found-container p {
+        font-size: 13px;
+    }
+
+    .page-not-found-img-box img {
+        max-height: 10rem;
+        max-width: 100%;
+    }
+}

@@ -1,0 +1,8 @@
+<div class="chat-screen-container">
+    <div class="chat-screen-left-section__parent">
+        <chat-left-section [prevChatList]="prevChatList" (onUserSelect)="selectUserToChat($event)"></chat-left-section>
+    </div>
+    <div class="chat-screen-right-section__parent">
+        <chat-right-section [selectedUser]="selectedUser"></chat-right-section>
+    </div>
+</div>

@@ -1,0 +1,97 @@
+@import "../../app-variables";
+@import "../../mixins";
+@import "../../common";
+
+$search-header:#213067;
+
+.search-page-container {
+    min-height: calc(100vh - 8rem);
+
+    .search-page-header__parent {
+        background-color: $search-header;
+        min-height: 15rem;
+        @include flexContainer(center, center);
+        flex-direction: column;
+        padding: 2rem;
+
+        .search-header-title {
+            color: #fff;
+            letter-spacing: 0.07rem;
+            margin-bottom: 2rem;
+        }
+    }
+
+    .no-search-result__parent {
+        margin-top: 2rem;
+        font-size: 1rem;
+        letter-spacing: 0.05rem;
+    }
+
+    .empty_search-input__parent {
+        @extend .no-search-result__parent;
+    }
+
+    .result-label {
+        @extend .no-search-result__parent;
+        margin-bottom: 3rem;
+    }
+
+    .search-result {
+        border: 1px solid lightgray;
+        color: #000;
+        background: white;
+        margin-top: 1rem;
+        min-height: 6rem;
+        min-width: 38rem;
+        padding: 1rem 2rem;
+        @include flexContainer(flex-start, center);
+
+        .mat-icon {
+            font-size: 3.5rem;
+            height: 3.5rem;
+            width: 3.5rem;
+        }
+
+        .details {
+            flex: 1;
+            padding: 1rem;
+
+            p {
+                letter-spacing: 0.05rem;
+                margin-bottom: 0;
+            }
+
+            p:nth-child(1) {
+                font-size: 1rem;
+            }
+
+            p:nth-child(2) {
+                font-size: 0.7rem;
+            }
+        }
+
+        .action {
+            justify-self: flex-end;
+            flex-wrap: wrap;
+
+            button {
+                @include button;
+                font-size: 0.65rem;
+                margin-left: 1rem;
+                box-shadow: none;
+                @include inlineFlexContainer(space-between, center);
+
+                &.btn-success {
+                    background-color: #1e7e34;
+                    border: 0.01rem solid #1e7e34;
+                }
+
+                .mat-icon {
+                    font-size: 0.7rem;
+                    height: 0.7rem;
+                    width: 0.8rem;
+                }
+            }
+        }
+    }
+}

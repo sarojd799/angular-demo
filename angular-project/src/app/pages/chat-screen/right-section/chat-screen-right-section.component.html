@@ -1,0 +1,44 @@
+<div class="active-chat-section">
+    <div class="active-chat-header">
+        <mat-icon>account_circle</mat-icon>
+        <div class="active-user">
+            <p class="name">
+                {{_selectedUser?.username}}
+            </p>
+            <p class="status">
+                Online
+            </p>
+        </div>
+        <div class="chat-opt">
+            <mat-icon>more_vert</mat-icon>
+        </div>
+    </div>
+    <div #chatBody class="active-chat-body">
+        <div *ngFor="let eachMsg of messageCollection" class="each-message__parent">
+            <div class="text-left inner-content__parent" [class.text-left]="currentUser !== eachMsg.sender"
+                [class.text-right]="currentUser === eachMsg.sender">
+                <div class="inner-content">
+                    <p>
+                        <label for="">
+                            {{eachMsg.sender}}
+                        </label>
+                        <span>
+                            {{eachMsg.timeStamp | date:'medium' }}
+                        </span>
+                    </p>
+                    <p>
+                        {{eachMsg.message}}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="active-chat-footer">
+        <textarea [(ngModel)]="chatInput" placeholder="write something..." name="" id="" cols="30" rows="10"
+            class="chat-input"></textarea>
+        <button class="btn send-btn" (click)="sendMessage(chatInput)" [disabled]="!connected">
+            Send
+        </button>
+    </div>
+</div>

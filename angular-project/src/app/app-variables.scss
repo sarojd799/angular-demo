@@ -1,0 +1,27 @@
+@import url('https://fonts.googleapis.com/css2?family=Righteous&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+
+//font awesome
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css');
+
+
+//colors
+$admin-header: #3f51b5;
+$admin-footer: #777;
+
+
+$app-header: #3f51b5;
+$app-footer: #666;
+$app-side-nav: rgba(0, 0, 0, 0.87);
+
+
+$app-yellow : #FDC500;
+$nav-link-hover-color: lightgray;
+
+
+$web-content-height-min: calc(100vh - 8rem);
+
+//Responsive
+$mobile-device: 600px;
+$mob-content-height-min: calc(100vh - 5rem);

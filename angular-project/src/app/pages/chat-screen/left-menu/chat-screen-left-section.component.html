@@ -1,0 +1,22 @@
+<div class="chat-screen-left">
+    <div class="search-friends-container">
+        <div class="search-box">
+            <input type="text" autocorrect="off" class="form-control" (keyup)="filterPrevChat($event)"
+                placeholder="search contact">
+            <mat-icon class="user-search-icon">search</mat-icon>
+        </div>
+    </div>
+    <div class="prev-chat-list">
+        <div class="prev-chat-user__parent" *ngFor="let user of prevChatFiltered" (click)="selectUserToChat(user)">
+            <mat-icon>account_circle</mat-icon>
+            <div class="prev-chat-user">
+                <p>
+                    {{user.username}}
+                </p>
+                <p>
+                    {{user.chat}}
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

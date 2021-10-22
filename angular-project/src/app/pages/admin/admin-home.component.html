@@ -1,0 +1,41 @@
+<div class="admin-container">
+    <header class="admin-header">
+        <span class="header-title">
+            <label for="">
+                Angular Admin
+            </label>
+        </span>
+        <span class="app-burger-menu" (onBurgerClick)="setBurgerMenuStatus($event)"></span>
+        <nav class="admin-navs-container">
+            <ul class="admin-nav-list-container">
+                <li routerLink="/admin/adminDashboard">
+                    dashboard
+                </li>
+                <li routerLink="/admin/manageUsers">
+                    users management
+                </li>
+                <li logoutLink>
+                    <mat-icon>exit_to_app</mat-icon>
+                    Logout
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <div class="admin-content">
+        <div class="admin-side-menu" [class.animate]="burgerMenuClicked">
+            <div class="side-menu-content">
+                <ul class="side-menu-list" [hidden]="!burgerMenuClicked">
+                    <li>dashboard</li>
+                    <li>User management</li>
+                    <li>logout</li>
+                </ul>
+            </div>
+        </div>
+        <div class="admin-content-area">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+    <footer class="admin-footer text-center">
+        Developed by @saroj kumar dash
+    </footer>
+</div>

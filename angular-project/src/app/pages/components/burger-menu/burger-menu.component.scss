@@ -1,0 +1,42 @@
+.burger-menu::after,
+.burger-menu::before {
+    content: '';
+    width: 20px;
+    height: 3px;
+    background-color: white;
+    position: absolute;
+    transition: all .5s ease;
+}
+
+.burger-menu {
+    height: 3px;
+    width: 20px;
+    background-color: white;
+    position: relative;
+}
+
+.burger-menu::after {
+    transform: translateY(6px);
+}
+
+.burger-menu::before {
+    transform: translateY(-6px);
+}
+
+
+.app-burger-menu {
+    display: inline-flex;
+}
+
+.burger-menu.active {
+    height: 0;
+    width: 0;
+}
+
+.burger-menu.active::after {
+    transform: rotate(45deg);
+}
+
+.burger-menu.active::before {
+    transform: rotate(-45deg);
+}

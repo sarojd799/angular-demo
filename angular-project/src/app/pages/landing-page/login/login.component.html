@@ -29,14 +29,14 @@
                     <mat-label>
                         Password
                     </mat-label>
-                    <input #password type="password" matInput formControlName="password" name="loginUser"
-                        [errorStateMatcher]="matcher" placeholder="Enter username" autocomplete="off"
-                        spellcheck="false">
+                    <input #password type="password" (keyup.Enter)="loginForm.valid && loginBtn.click()" matInput
+                        formControlName="password" name="loginUser" [errorStateMatcher]="matcher"
+                        placeholder="Enter username" autocomplete="off" spellcheck="false">
                     <mat-icon matSuffix *ngIf="password.type === 'password'" (click)="password.type='text'">
                         visibility_off
                     </mat-icon>
                     <mat-icon matSuffix *ngIf="password.type === 'text'" (click)="password.type = 'password'">
-                        visibility_off
+                        visibility
                     </mat-icon>
                     <mat-error *ngIf="loginFormErr.password">
                         {{loginFormErr.password}}
@@ -52,7 +52,7 @@
             </div>
         </div>
         <div class="form-group form-submit-btns-container">
-            <button type="submit" class="btn btn-primary btn-bar btn-sm login-btn">
+            <button type="submit" class="btn btn-primary btn-bar btn-sm login-btn" #loginBtn>
                 LOGIN
             </button>
             <button type="button" mat-dialog-close class="btn btn-default btn-bar btn-sm login-btn">

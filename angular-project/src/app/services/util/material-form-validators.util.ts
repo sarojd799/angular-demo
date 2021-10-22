@@ -3,11 +3,7 @@ import { ErrorStateMatcher } from "@angular/material/core";
 
 
 /*
-
- A class that will validate the material input invalid or error state;
-
-
-
+    A class that will validate the material input invalid or error state;
 */
 class RequiredFieldsMatchers implements ErrorStateMatcher {
     isErrorState(c: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {

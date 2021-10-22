@@ -22,7 +22,8 @@ export class LandingPageComponent {
     showLoginDialog() {
         this.dialogRef = this._dialog.open(this.formsContainer, {
             autoFocus: false,
-            disableClose: true
+            disableClose: true,
+            panelClass: 'login-dialog'
         });
     }
 

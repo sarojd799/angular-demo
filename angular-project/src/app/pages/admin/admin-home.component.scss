@@ -1,0 +1,135 @@
+@import '../../app-variables';
+@import '../../mixins.scss';
+
+.admin-container {
+    height: 100%;
+    width: 100%;
+    min-width: 10rem;
+
+    .admin-header {
+        height: 3rem;
+        width: 100%;
+        background: $admin-header;
+        color: white;
+        @include paddingHorizontal(1rem, 0.5rem);
+        @include flexContainer(space-between, center);
+
+        .header-title {
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            font-weight: 400;
+            flex: 3;
+            @include flexContainer(flex-start, center);
+
+            label {
+                margin: 0;
+            }
+        }
+    }
+
+    .admin-content {
+        min-height: calc(100vh - 5rem);
+        height: auto;
+        width: 100%;
+        position: relative;
+
+        .admin-side-menu {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+        }
+    }
+
+    //footer
+    .admin-footer {
+        height: 2rem;
+        @include flexContainer(center, center);
+        background: $admin-footer;
+        color: white;
+        letter-spacing: 0.05rem;
+    }
+
+}
+
+.app-burger-menu {
+    display: none;
+}
+
+.admin-content-area {
+    height: 100%;
+    width: 100%;
+}
+
+.admin-navs-container {
+    flex: 1;
+}
+
+.admin-navs-container ul {
+    margin: 0;
+    @include flexContainer(flex-end, center);
+    @include paddingHorizontal(1rem, 1rem);
+    list-style: none;
+    color: white;
+
+    li {
+        margin-left: 1rem;
+        letter-spacing: 0.05rem;
+        white-space: nowrap;
+        text-transform: capitalize;
+        @include flexContainer(flex-start, center);
+
+        .mat-icon {
+            font-size: 0.7rem;
+            @include flexContainer(center, center);
+        }
+
+        &:hover {
+            color: $nav-link-hover-color;
+            cursor: pointer;
+        }
+    }
+}
+
+@media only screen and (max-width: $mobile-device) {
+    .app-burger-menu {
+        display: inline-flex;
+    }
+
+    .admin-navs-container {
+        display: none;
+    }
+
+    .admin-side-menu {
+        height: 100%;
+        clip-path: circle(0% at 100% 0%);
+        background-color: #3f51b5f2;
+        transition: clip-path 1s ease-in-out;
+        @include flexContainer(center, center);
+    }
+
+    .admin-side-menu.animate {
+        clip-path: circle(140% at 100% 0%);
+    }
+
+    .admin-side-menu .side-menu-content ul {
+        margin: 0;
+        list-style: none;
+        color: white;
+        padding-top: 2rem;
+
+        li {
+            letter-spacing: 1px;
+            font-size: 17px;
+            font-weight: 400;
+            margin-top: 0.5rem;
+            text-transform: capitalize;
+            cursor: pointer;
+            text-align: left;
+
+            &:hover {
+                color: lightgray;
+            }
+        }
+    }
+}

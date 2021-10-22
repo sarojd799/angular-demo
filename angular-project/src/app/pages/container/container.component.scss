@@ -1,76 +1,200 @@
+@import "../../app-variables";
+@import "../../mixins";
+
+//===============================header==============================//
 .app-header {
-  background-color: #3f51b5;
-  color:white;
-  letter-spacing: 1px;
-  display: flex;
-  align-items: center;
-  height:50px;
-  padding:0.5rem 1rem;
+    background-color: $app-header;
+    color: white;
+    @include flexContainer(space-between, center);
+    height: 3.5rem;
+    padding: 0.5rem 2rem;
+
+    .active-header-link {
+        font-weight: bolder;
+        color: $app-yellow;
+    }
+
+    .nav-heading-label {
+        font-size: 1rem;
+        font-weight: 600;
+        letter-spacing: 0.13rem;
+
+        &::first-letter {
+            font-size: 1.1rem;
+        }
+    }
+
+    .nav-menu {
+        flex: 2;
+        @include flexContainer(flex-end, center);
+        padding-right: 2rem;
+
+        .nav-list-items__parent {
+            display: flex;
+            margin: 0;
+
+            li {
+                margin-left: 1.5rem;
+                letter-spacing: 0.12rem;
+                @include flexContainer(space-between, center);
+                cursor: pointer;
+                position: relative;
+                transition: all .1s ease;
+                max-width: max-content;
+
+                .nav-label {
+                    display: none;
+                }
+
+                &:hover .nav-label {
+                    display: block;
+                }
+
+                .badge {
+                    top: -1rem;
+                    z-index: 10;
+                    left: 0rem;
+                    font-size: 0.5rem;
+                }
+
+                .mat-icon {
+                    font-size: 1.3rem;
+                    height: 1.3rem;
+                }
+
+                span:last-of-type {
+                    font-size: 0.7rem;
+                    letter-spacing: 0.12rem;
+                    margin-left: 0.4rem;
+                    max-width: 6rem;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+
+                &:hover {
+                    color: #ccc;
+                }
+            }
+
+            //==============================================account-dropdown==========================//
+
+            .user-opts-dd {
+                position: relative;
+
+                #account-options-menu-items__parent {
+                    position: absolute;
+                    top: 2.5rem;
+                    font-size: 0.7rem;
+                    z-index: 33;
+                    min-width: 10rem;
+                    box-shadow: 1px 0px lightgrey;
+                    border-radius: 0;
+
+                    .mat-icon,
+                    .fa {
+                        font-size: 1.1rem;
+                        height: 1.1rem;
+                        margin-right: 0.5rem;
+                    }
+
+                    li {
+                        @include flexContainer(flex-start, center);
+                        padding-left: 1.5rem;
+                        color: #000;
+                        font-weight: bold;
+                        margin-left: 0;
+                        min-width: 10rem;
+
+                        &:hover {
+                            background: lightgray;
+                        }
+                    }
+                }
+            }
+
+            //dropdown ends
+        }
+    }
 }
+
+//=================RESPONSIVE-HEADER=========================//
+
+@media only screen and (max-width:600px) {
+    .user-header-nav {
+        display: none !important;
+    }
+
+    .mobile-nav-items__parent {
+        list-style: none;
+
+        li {
+            @include flexContainer(flex-start, center);
+            min-width: 8rem;
+            margin-bottom: 1rem;
+
+            span {
+                letter-spacing: 0.065rem;
+                margin-left: 0.6rem;
+            }
+        }
+
+
+        .mob-nav-item {
+            padding: 0 0.5rem;
+
+            &.active-mob-nav {
+                color: $app-yellow;
+            }
+        }
+    }
+}
+
+//=================================content-start=============================//
+
+.parent-container {
+    .main-content {
+        min-height: calc(100vh - 5.5rem);
+
+        .section {
+            height: 100%;
+            width: 100%;
+        }
+
+        .left-section__parent {
+            position: fixed;
+            clip-path: circle(0% at 100% 0%);
+            @include flexContainer(center, center);
+        }
+
+
+        .right-section__parent {
+            z-index: 1;
+        }
+    }
+}
+
+//=======================content-responsive======================//
+
+@media only screen and (max-width:600px) {
+    .left-section__parent {
+        background-color: $app-side-nav;
+        transition: all 1s ease-in-out;
+        z-index: 3;
+        color: white;
+
+        &.animate {
+            clip-path: circle(140% at 10% 60%) !important;
+        }
+    }
+}
+
+//=========================footer=====================//
+
 .app-footer {
-    height:30px;
-    background-color: #999;
-}
-.main-content {
-    height: calc(100% - 80px);
-    overflow-y:auto;
-}
-.nav-menu ul {
-    margin:0;
-    display: flex;
-    align-items: center;
-    list-style-type: none;
-}
-.nav-menu ul li {
-    margin-left: 1rem;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-}
-.nav-menu ul li a {
-   color:white;
-   text-decoration: none;
-   letter-spacing: 1px;
-   cursor: pointer;
-   user-select: none;
-}
-.nav-menu ul li a:hover {
-    color:#ccc;
-}
-
-.app-header .burger-menu {
-    flex: 2;
-}
-.app-header .nav-menu {
-    flex:1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* Left menu*/
-.main-content {
-    display: flex;
-}
-.left-menu {
-   width:12rem;
-   background-color: #E0DDE0;
-   border-right: 1px solid 1px solid #E0DDE0;
-   margin-left:-12rem;
-   transition: margin 1s ease;
-   padding:1rem;
-}
-.main-content .left-menu,
-.main-content .right-section {
-    height:100%;
-}
-
-.left-menu.toggle-left-menu {
-    margin-left: 0;
-}
-.left-menu.toggle-left-menu + .right-section {
-    flex:1;
-}
-.right-section {
-    padding: 10px;
-    width: 100%;
+    height: 2rem;
+    background-color: $app-footer;
+    color: white;
+    letter-spacing: 0.05rem;
+    text-transform: capitalize;
+    font-size: 0.7rem;
 }

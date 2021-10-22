@@ -3,16 +3,16 @@ import { ActivatedRouteSnapshot, CanActivateChild, Router, RouterStateSnapshot }
 import { SessionService } from '../util/session.service';
 
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class AuthGuard implements CanActivateChild {
 
   constructor(private router: Router, private _session: SessionService) { }
 
   canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     if (!this._session.getItem(this._session.authKey)) {
-      this.router.navigate(['login'])
+      this.router.navigate([''])
+    } else {
+      this.router.navigate(['home', 'posts'])
     }
     return true;
   }

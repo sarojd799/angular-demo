@@ -1,15 +1,18 @@
-$app-blue:#424c85;
-
-
+@import "./app-variables";
+@import "./mixins.scss";
 
 /**/
 #spinner-parent {
     position: fixed;
     top: 0;
     left: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     height: 100%;
     width: 100%;
+    @include flexContainer(center, center);
+}
+
+@media only screen and (max-width: $mobile-device) {
+    .burger-menu {
+        display: block;
+    }
 }

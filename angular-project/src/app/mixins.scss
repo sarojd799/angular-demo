@@ -1,0 +1,30 @@
+@mixin flexContainer($horizontalPos: center, $verticalPos:center) {
+    display: flex;
+    justify-content: $horizontalPos;
+    align-items: $verticalPos;
+}
+
+@mixin inlineFlexContainer($horizontalPos: center, $verticalPos:center) {
+    display: inline-flex;
+    justify-content: $horizontalPos;
+    align-items: $verticalPos;
+}
+
+@mixin paddingHorizontal($left: 0, $right: 0) {
+    padding-left: $left;
+    padding-right: $right;
+}
+
+@mixin borderHorizontal($left: 0, $right:0, $color:lightgray) {
+    border-left: #{$left}px solid $color;
+    border-right: #{$left}px solid $color;
+}
+
+@mixin button($background:dodgerblue, $color:white) {
+    border: 1px solid $background;
+    outline: none;
+    background: $background;
+    color: $color;
+    border-radius: 0;
+    letter-spacing: 0.05rem;
+}

@@ -1,0 +1,7 @@
+<div class="search-container">
+    <input type="text" #userSearch autocomplete="off" [(ngModel)]="searchInput"
+        (ngModelChange)="searchInputHandler($event)" spellcheck="false" [class.animate-width]="!!searchInput" value=""
+        id="search-connection-input" class="form-control" placeholder="search users...">
+    <mat-icon class="user-search-icon" *ngIf="searchInput" (click)="onClear()">close</mat-icon>
+    <mat-icon class="user-search-icon" *ngIf="!searchInput">search</mat-icon>
+</div>

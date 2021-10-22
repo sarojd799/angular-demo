@@ -29,9 +29,14 @@
             <div class="form-group">
                 <mat-form-field appearance="outline">
                     <mat-label>Password</mat-label>
-                    <input matInput [errorStateMatcher]="matcher" formControlName="password" name="password"
-                        placeholder="Enter password" autocomplete="off">
-                    <mat-icon matSuffix>lock</mat-icon>
+                    <input type="password" #signUpPassword matInput [errorStateMatcher]="matcher"
+                        formControlName="password" name="password" placeholder="Enter password" autocomplete="off">
+                    <mat-icon matSuffix *ngIf="signUpPassword.type === 'password'" (click)="signUpPassword.type='text'">
+                        visibility_off
+                    </mat-icon>
+                    <mat-icon matSuffix *ngIf="signUpPassword.type === 'text'" (click)="signUpPassword.type='password'">
+                        visibility
+                    </mat-icon>
                     <mat-error *ngIf="signUpFormErr.password">
                         {{signUpFormErr.password}}
                     </mat-error>
@@ -40,9 +45,17 @@
             <div class="form-group">
                 <mat-form-field appearance="outline">
                     <mat-label>Confirm Password</mat-label>
-                    <input matInput formControlName="confirmPassword" [errorStateMatcher]="matcher"
-                        name="confirmPassword" placeholder="Enter confirm password" autocomplete="off">
-                    <mat-icon matSuffix>lock</mat-icon>
+                    <input type="password" #signUpConfirmPassword matInput formControlName="confirmPassword"
+                        [errorStateMatcher]="matcher" name="confirmPassword" placeholder="Enter confirm password"
+                        autocomplete="off">
+                    <mat-icon matSuffix *ngIf="signUpConfirmPassword.type === 'password'"
+                        (click)="signUpConfirmPassword.type='text'">
+                        visibility_off
+                    </mat-icon>
+                    <mat-icon matSuffix *ngIf="signUpConfirmPassword.type === 'text'"
+                        (click)="signUpConfirmPassword.type='password'">
+                        visibility
+                    </mat-icon>
                     <mat-error *ngIf="signUpFormErr.confirmPassword || signUpFormErr.passwordGroup">
                         {{signUpFormErr.confirmPassword || signUpFormErr.passwordGroup}}
                     </mat-error>

@@ -1,0 +1,67 @@
+@import "../../app-variables";
+@import '../../mixins';
+
+.posts-container-page {
+    height: auto;
+    height: 100%;
+    width: 100%;
+    @include flexContainer(center, stretch);
+
+    .wall-section {
+        min-width: 60%;
+        height: 100%;
+        border: 1px solid lightgray;
+        padding: 1rem;
+        overflow-y: auto;
+
+        .wall-post-input__parent {
+            min-width: 15rem;
+            height: 8rem;
+            padding: 1rem 1.5rem;
+            @include flexContainer(flex-start, flex-start);
+
+            textarea {
+                flex: 80%;
+                border: 1px solid lightgray;
+                outline: none;
+                padding: 0.5rem;
+                height: 100%;
+                font-size: 0.9rem;
+            }
+
+            button {
+                flex: 9%;
+                margin-left: 1rem;
+                @include button($app-header, white);
+            }
+        }
+
+        .wall-post-list__parent {
+            height: calc(100% - 9rem);
+            margin-top: 1rem;
+            padding: 1rem;
+
+            .wall-post-list {
+                padding: 0.5rem;
+
+                .wall-post {
+                    height: 7rem;
+                    width: 100%;
+                    padding: 1rem;
+                    border: 1px solid lightgray;
+                }
+            }
+        }
+    }
+}
+
+//===========================responsive-section=======================//
+@media only screen and(max-width:600px) {
+    .posts-container-page {
+        min-height: $mob-content-height-min;
+
+        .wall-section {
+            min-width: 90vw;
+        }
+    }
+}

@@ -1,8 +1,7 @@
-import { AfterViewChecked, AfterViewInit, Component, DoCheck, OnInit, Output } from '@angular/core';
+import { Component, DoCheck, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/services/auth/authentication.service';
-import { SessionService } from 'src/app/services/util/session.service';
 import { ValidationUtils } from 'src/app/services/util/validation.service';
 import { trigger, state, transition, animate, style } from '@angular/animations';
 
@@ -79,8 +78,13 @@ export class LoginComponent implements OnInit, DoCheck {
         this.loginErrorMsg = 'Invalid username or password';
       } else {
         this.onDialogEvent.emit('CLOSE');
-        this._auth.saveUserCredentials(res.token);
-        this.router.navigate(['home', 'student'])
+        console.log({ name: payload.username })
+        this._auth.saveUserCredentials({ ...res, username: payload.username });
+        if (res.roles && res.roles.includes('ADMIN')) {
+          this.router.navigateByUrl('admin/adminDashboard')
+        } else {
+          this.router.navigate(['home', 'posts'])
+        }
         this._snackBar.open(`Welcome ${payload.username}`, undefined, dialogConfig);
       }
     })
@@ -120,6 +124,7 @@ export class LoginComponent implements OnInit, DoCheck {
 
   checkLoginValidationErrors(loginForm: FormGroup, event: String = '') {
     this.loginFormErr = {};
+    this.loginErrorMsg = '';
     Object.keys(loginForm.controls).forEach((fieldName: string) => {
       const control = loginForm.get(fieldName) || { invalid: false, touched: false };
       if (control.invalid) {

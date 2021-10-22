@@ -1,0 +1,54 @@
+<div class="search-page-container">
+    <div class="search-page-header__parent">
+        <p class="search-header-title h4 text-center">
+            Users Search
+        </p>
+        <!--search container-->
+        <search-component (onChange)="handleSearchChange($event)"></search-component>
+    </div>
+
+    <div class="search-page-result__parent">
+        <p *ngIf="userInput.length && searchResult.length" class="h5 text-center result-label">
+            Showing results for users search with keyword <strong>{{userInput}}</strong>
+        </p>
+
+        <!--search result length-->
+        <div class="has-search-result__parent" *ngIf="searchResult.length">
+            <div class="search-result" *ngFor="let user of searchResult">
+                <mat-icon>account_circle</mat-icon>
+                <div class="details">
+                    <p>
+                        {{user.email}}
+                    </p>
+                    <p>
+                        Detroit, Michigan
+                    </p>
+                </div>
+                <div class="action">
+                    <button class="add btn btn-primary">
+                        <mat-icon>
+                            visibility
+                        </mat-icon>&nbsp;
+                        View Profile
+                    </button>
+                    <button class="add btn btn-success" *ngIf="user.email !== loggedInUser">
+                        <mat-icon>
+                            person_add
+                        </mat-icon>&nbsp;
+                        Add To Connection
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!--user haven't searched-->
+        <div class="empty_search-input__parent text-center" *ngIf="!userInput.length">
+            Please enter keyword to search for users
+        </div>
+
+        <!--no search result length-->
+        <div class="no-search-result__parent text-center" *ngIf="userInput.length && !searchResult.length">
+            No result found
+        </div>
+    </div>
+</div>

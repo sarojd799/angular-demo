@@ -5,7 +5,8 @@
 export const environment = {
   production: false,
   timeout: 120000,
-  baseURI: 'http://localhost:8080'
+  baseURI: 'http://localhost:8080',
+  localIP: 'http://192.168.1.20:8080'
 
 };
 

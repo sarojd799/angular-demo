@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ThemePalette } from '@angular/material/core';
 import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
+import { IdleManagerService } from './services/util/idle-manager';
 import { LoaderService } from './services/util/loader.service';
 
 @Component({
@@ -8,14 +9,27 @@ import { LoaderService } from './services/util/loader.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
 
   showSpinner = false;
   spinnerColor: ThemePalette = "accent";
   spinnerSpeed = 50;
   spinnerMode: ProgressSpinnerMode = 'indeterminate';
 
-  constructor(private loaderService: LoaderService) {
+  constructor(
+    private loaderService: LoaderService,
+    private _idleManager: IdleManagerService) { }
+
+  subscribeToEvents() {
     this.loaderService.loader.subscribe(val => this.showSpinner = !!val);
+  }
+
+  initConfigs() {
+    this._idleManager.init();
+  }
+
+  ngOnInit() {
+    this.subscribeToEvents();
+    this.initConfigs();
   }
 }

@@ -38,6 +38,8 @@ export class ValidationUtils {
     }
 
     asyncEmailValidate(control: AbstractControl): Observable<ValidationErrors | null> {
-        return this._auth.validateRegisterationName(control.value).pipe(map(res => ((res) ? { emailExists: true } : null)));
+        return this._auth.validateRegisterationName(control.value).pipe(
+            map(res => ((res) ? { emailExists: true } : null))
+        );
     }
 }
