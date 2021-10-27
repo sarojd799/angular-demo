@@ -1,29 +1,74 @@
-import { Component, OnInit, SimpleChange } from '@angular/core';
+import { Component, OnDestroy, OnInit, SimpleChange, ViewEncapsulation } from '@angular/core';
+import { UserService } from 'app/services/backend/user.service';
+import { SessionService } from 'app/services/util/session.service';
+import { interval, Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
-  styleUrls: ['./chat.component.scss']
+  styleUrls: ['./chat.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
-export class ChatComponent implements OnInit {
+export class ChatComponent implements OnInit, OnDestroy {
 
-  prevChatList = [
-    'Dev', 'test', 'Chinmay Panda', 'Ashish Sahu', 'Jaggu Panda', 'Sourav Guru', 'Pratyush padhi', 'Suraj Gagrai'
-  ].map(u => ({
-    username: u + '@gmail.com',
-    chat: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptatem, aspernatur soluta dicta reiciendis, quae recusandae eaque in aut ab libero nam! Ratione error nemo doloremque dolores harum deleniti sint neque.'
-  }))
+  userSelected = false;
 
-  selectedUser: any = this.prevChatList[0];
+  prevChatList = [];
 
-  constructor() { }
+  selectedUser: any = {};
 
-  ngOnInit(): void {
+  interval!: Subscription;
+
+  constructor(
+    private _userService: UserService,
+    private _session: SessionService
+  ) { }
+
+  getAllConnections(user: any) {
+    if (user) {
+      this._userService.getAllConnectionsOfUser(user.userDetailsId).subscribe(
+        res => {
+          if (res && res.length && JSON.stringify(res) !== JSON.stringify(this.prevChatList)) {
+            this.prevChatList = res;
+            this.checkActiveUserStatus(res);
+          }
+        }
+      );
+    }
+  }
+
+  checkActiveUserStatus(users: any) {
+    if (this.selectedUser) {
+      const match = users.find((u: any) => u.userDetailsId === this.selectedUser.userDetailsId);
+      if (match && JSON.stringify(match) !== JSON.stringify(this.selectedUser)) {
+        this.selectedUser = match;
+      }
+    }
   }
 
 
-  selectUserToChat(event: any) {
-    this.selectedUser = event;
+  registerInterval() {
+    this.interval = interval(2000).subscribe(res => this.getAllConnections(this._session.getUserDetails()));
+  }
+
+  ngOnInit() {
+    console.warn("registed call api")
+    this.registerInterval();
+  }
+
+
+  selectUserToChat(user: any) {
+    this.selectedUser = user;
+    this.userSelected = true;
+  }
+
+  onMobBackClick() {
+    this.userSelected = false;
+  }
+
+
+  ngOnDestroy() {
+    if (this.interval) this.interval.unsubscribe();
   }
 
 }

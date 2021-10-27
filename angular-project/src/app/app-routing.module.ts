@@ -7,6 +7,7 @@ import { LandingPageComponent } from "./pages/landing-page/landing-page.componen
 import { PageNotFoundComponent } from "./pages/page-not-found/page-not-found.component";
 import { UnauthorizedComponent } from "./pages/unauthorized/unauthorized.component";
 import { AuthGuard } from "./services/route-guards/auth.guard";
+import { UserDetailsGuard } from "./services/route-guards/user-details.guard";
 import { LoginResolve } from "./services/route-guards/login.resolve";
 
 
@@ -16,7 +17,7 @@ import { LoginResolve } from "./services/route-guards/login.resolve";
  */
 const appRoutes: Routes = [
     { path: '', pathMatch: 'full', redirectTo: 'index' },
-    { path: 'index', component: LandingPageComponent, resolve: [LoginResolve] },
+    { path: 'index', component: LandingPageComponent, resolve: [LoginResolve], canDeactivate: [UserDetailsGuard] },
     { path: 'unauthorized', component: UnauthorizedComponent },
     { path: 'admin', loadChildren: "./pages/admin/admin.module#AdminModule" },
     { path: 'home', component: ContainerComponent, canActivateChild: [AuthGuard] },

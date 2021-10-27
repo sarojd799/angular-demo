@@ -1,0 +1,10 @@
+<div class="icon-or-img__parent">
+    <div class="user-icon__parent" *ngIf="!imgURL">
+        <mat-icon>
+            account_circle
+        </mat-icon>
+    </div>
+    <div class="user-image__parent" *ngIf="imgURL">
+        <div class="user-image" [ngStyle]="imageStyle"></div>
+    </div>
+</div>

@@ -1,0 +1,10 @@
+{
+    "id": 1,
+    "by": {
+        "id": 2,
+        "name": "dev@gmail.com"
+    },
+    "to": 1,
+    "date": "date-of-post-dispatch",
+    "content": "xxxxxxxxxxxxxxxxxxxxxxx"
+}

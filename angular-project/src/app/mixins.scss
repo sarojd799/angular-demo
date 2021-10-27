@@ -28,3 +28,7 @@
     border-radius: 0;
     letter-spacing: 0.05rem;
 }
+
+@mixin borderBottom($size) {
+    border-bottom: $size solid lightgray;
+}

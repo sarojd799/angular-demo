@@ -4,18 +4,17 @@
             Users Search
         </p>
         <!--search container-->
-        <search-component (onChange)="handleSearchChange($event)"></search-component>
+        <search-component (onInputChange)="handleSearchChange($event)"></search-component>
     </div>
 
     <div class="search-page-result__parent">
-        <p *ngIf="userInput.length && searchResult.length" class="h5 text-center result-label">
-            Showing results for users search with keyword <strong>{{userInput}}</strong>
-        </p>
-
         <!--search result length-->
         <div class="has-search-result__parent" *ngIf="searchResult.length">
+            <p class="h5 text-center result-label">
+                Showing results for users search with keyword <strong>{{userInput}}</strong>
+            </p>
             <div class="search-result" *ngFor="let user of searchResult">
-                <mat-icon>account_circle</mat-icon>
+                <div class="user-icon__component" [imageURL]="user.imgURL"></div>
                 <div class="details">
                     <p>
                         {{user.email}}
@@ -25,13 +24,15 @@
                     </p>
                 </div>
                 <div class="action">
-                    <button class="add btn btn-primary">
+                    <button class="add btn btn-primary view-profile-btn"
+                        [routerLink]="['../','profile',user.userDetailsId]">
                         <mat-icon>
                             visibility
                         </mat-icon>&nbsp;
                         View Profile
                     </button>
-                    <button class="add btn btn-success" *ngIf="user.email !== loggedInUser">
+                    <button class="add btn btn-success" *ngIf="user.email !== loggedInUser?.email && !user.connection"
+                        (click)="addToConnection(user)">
                         <mat-icon>
                             person_add
                         </mat-icon>&nbsp;

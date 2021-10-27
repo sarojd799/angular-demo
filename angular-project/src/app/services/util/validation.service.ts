@@ -14,6 +14,13 @@ export class ValidationUtils {
 
     static EMAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
+    static CHAR_REGEX = /^[A-Z]+$/i
+
+    static PINCODE_REGEX = /[0-9]{6}/
+
+    static PHONE_REGEX = /^[6-9]\d{9}$/
+
+
     required(control: AbstractControl): { [key: string]: any } | null {
         return (!control.value || !control.value.trim()) ? { missingVal: true } : null
     }
@@ -41,5 +48,17 @@ export class ValidationUtils {
         return this._auth.validateRegisterationName(control.value).pipe(
             map(res => ((res) ? { emailExists: true } : null))
         );
+    }
+
+    nameValidator(control: AbstractControl): { [key: string]: any } | null {
+        return control.value && !ValidationUtils.CHAR_REGEX.test(control.value) ? { invalidName: true } : null
+    }
+
+    pincodeValidator(control: AbstractControl): { [key: string]: any } | null {
+        return control.value && !ValidationUtils.PINCODE_REGEX.test(control.value) ? { invalidPincode: true } : null
+    }
+
+    phoneValidator(control: AbstractControl): { [key: string]: any } | null {
+        return control.value && !ValidationUtils.PHONE_REGEX.test(control.value) ? { invalidPhone: true } : null
     }
 }

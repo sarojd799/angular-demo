@@ -1,14 +1,16 @@
-import { Component, ElementRef, Input, OnChanges, OnInit, SimpleChange, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnChanges, OnInit, Output, EventEmitter, SimpleChanges, ViewChild } from '@angular/core';
 import HTMLUtils from 'app/services/util/htmlUtils';
 import { SessionService } from 'app/services/util/session.service';
 import { WebSocketUtils } from 'app/services/util/web-socket.service';
 
 @Component({
-    selector: 'chat-right-section',
+    selector: '#chat-screen-right',
     templateUrl: './chat-screen-right-section.component.html',
     styleUrls: ['../chat.component.scss']
 })
-export class ChatScreenRightSectionComponent implements OnInit, OnChanges {
+export class ChatScreenRightSectionComponent implements OnInit {
+
+    @Output() onSettingBackClick: EventEmitter<any> = new EventEmitter();
 
     _selectedUser: any;
 
@@ -32,18 +34,19 @@ export class ChatScreenRightSectionComponent implements OnInit, OnChanges {
 
     chatInput = '';
 
+    settingMenuOpened = false;
+
+    onBackClick() {
+        this.settingMenuOpened = false;
+        this.onSettingBackClick.emit();
+    }
+
+
     constructor(
         private _wsUtils: WebSocketUtils,
         private _session: SessionService,
         private _htmlUtils: HTMLUtils
     ) { }
-
-    ngOnChanges(changes: SimpleChanges) {
-        if (changes) {
-            console.log({ changes })
-        }
-    }
-
 
 
     ngOnInit() {
@@ -72,7 +75,7 @@ export class ChatScreenRightSectionComponent implements OnInit, OnChanges {
                 timeStamp: new Date()
             });
 
-            this._htmlUtils.scrollToBottomOfDiv(this.chatBody);
+            this._htmlUtils.scrollToBottomOfDiv(this.chatBody, 'chat-body');
             this.chatInput = ''
         }
     }
@@ -85,7 +88,7 @@ export class ChatScreenRightSectionComponent implements OnInit, OnChanges {
         let { body } = message;
         if (body) {
             body = JSON.parse(body);
-            this._htmlUtils.scrollToBottomOfDiv(this.chatBody);
+            this._htmlUtils.scrollToBottomOfDiv(this.chatBody, 'chat-body');
             this.chatInput = ''
             this.messageCollection.push(body);
         }

@@ -2,12 +2,14 @@ import { NgModule } from '@angular/core';
 import { SharedModule } from 'app/shared/shared.module';
 import { BurgerMenu } from './burger-menu/burger-menu.component';
 import { SearchComponent } from './search/search.component';
+import { UserIconComponent } from './user-icon/user-icon.component';
 
 
 @NgModule({
     declarations: [
         BurgerMenu,
-        SearchComponent
+        SearchComponent,
+        UserIconComponent
     ],
     imports: [
         SharedModule
@@ -15,7 +17,8 @@ import { SearchComponent } from './search/search.component';
     providers: [],
     exports: [
         SearchComponent,
-        BurgerMenu
+        BurgerMenu,
+        UserIconComponent
     ]
 })
 export class CommonComponentsModule { }

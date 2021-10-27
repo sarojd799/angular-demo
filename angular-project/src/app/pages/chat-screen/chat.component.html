@@ -1,8 +1,10 @@
 <div class="chat-screen-container">
-    <div class="chat-screen-left-section__parent">
-        <chat-left-section [prevChatList]="prevChatList" (onUserSelect)="selectUserToChat($event)"></chat-left-section>
+    <div chat-screen-left class="chat-screen-left-section__parent" [class.animate]="userSelected">
+        <div id="chat-screen-left" [prevChatList]="prevChatList" (onUserSelect)="selectUserToChat($event)"></div>
     </div>
     <div class="chat-screen-right-section__parent">
-        <chat-right-section [selectedUser]="selectedUser"></chat-right-section>
+        <div *ngIf="selectedUser.email" id="chat-screen-right" (onSettingBackClick)="onMobBackClick()"
+            [selectedUser]="selectedUser"></div>
+        <div *ngIf="!selectedUser.email" class="user-not-selected"></div>
     </div>
 </div>

@@ -44,13 +44,13 @@ export class IdleManagerService {
         this.idle.onTimeout.subscribe(() => {
             this.idleState = 'Timed out!';
             this.timeOut = true;
-            console.log(this.idleState);
+            alert(this.idleState);
             this._router.navigate(['/']);
         });
 
         this.idle.onIdleStart.subscribe(() => {
             this.idleState = 'You\'ve gone idle!'
-            console.log(this.idleState);
+            alert(this.idleState);
         });
 
         this.idle.onTimeoutWarning.subscribe((countdown) => {
@@ -66,5 +66,4 @@ export class IdleManagerService {
 
         this.keepalive.onPing.subscribe(() => this.lastPing = new Date());
     }
-    //         if (userLoggedIn) idle.watch() :idle.stop();
 }

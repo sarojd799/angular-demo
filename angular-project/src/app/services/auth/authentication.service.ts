@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { SocialAuthService } from 'angularx-social-login';
 import { Observable, of } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { AUTH_API } from '../util/api.enum';
+import { AUTH_API } from './auth.api';
 import { SessionService } from '../util/session.service';
 
 @Injectable({ providedIn: 'root' })
@@ -23,9 +23,7 @@ export class AuthenticationService {
       debounceTime(100),
       distinctUntilChanged()
     ).subscribe(event => {
-      if (!this._session.getUserName()) {
-        this.logOutUser();
-      }
+      if (!this._session.getUserName()) this.logOutUser();
     })
   }
 
@@ -33,8 +31,8 @@ export class AuthenticationService {
     return this._httpc.get(AUTH_API.checkUserByEmailURI(name));
   }
 
-  saveUserCredentials(token: string) {
-    this._session.addItem(this._session.authKey, token);
+  saveUserCredentials(credentials: string) {
+    this._session.addItem(this._session.authKey, credentials);
   }
 
   clearUserCredentials() {

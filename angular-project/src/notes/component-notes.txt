@@ -28,3 +28,7 @@ However, all this works only with the Sass pre-compiler which in the end creates
             transition('true => false', animate('600ms ease-in'))
         ])
     ]
+
+
+
+    https://stackoverflow.com/questions/47850510/css-is-not-working-in-my-angular-component

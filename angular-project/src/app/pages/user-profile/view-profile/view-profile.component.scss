@@ -1,0 +1,98 @@
+@import "../../../app-variables";
+@import "../../../mixins";
+
+
+.view-profile__container {
+    min-height: calc(100vh - 5.5rem);
+    @include flexContainer(flex-start, stretch);
+}
+
+//=======================LEFT_PANEL=========================================//
+
+.view-profile__container {
+    .view-profile-left__parent {
+        flex: 25%;
+        min-width: 20rem;
+        padding: 5rem 1rem;
+        border-right: 1px solid lightgray;
+
+        .img-container {
+            min-height: 12rem;
+            width: 100%;
+            @include flexContainer(center, center);
+
+            &>div {
+                height: 11rem;
+                width: 11rem;
+                border-radius: 50%;
+                font-size: 11rem;
+                background-size: cover;
+            }
+        }
+    }
+}
+
+
+
+
+
+//=======================RIGHT_PANEL========================================//
+.view-profile__container {
+    .view-profile-right__parent {
+        flex: 75%;
+        min-width: 40rem;
+        border-left: 1px solid lightgray;
+        padding: 4rem 7rem;
+
+        .basic-info__parent {
+            min-height: 10rem;
+            min-width: 13rem;
+            padding: 1rem;
+
+            .heading {
+                margin-bottom: 2rem;
+            }
+
+            .details__parent {
+                .detail {
+
+                    @include flexContainer(flex-start, center);
+                    margin-bottom: 1rem;
+
+                    label,
+                    p {
+                        margin: 0
+                    }
+
+                    label {
+                        min-width: 7rem;
+                    }
+                }
+            }
+        }
+
+        .address-info__parent {
+            @extend .basic-info__parent;
+        }
+    }
+}
+
+//==============================================================================//
+
+@media only screen and(max-width:600px) {
+    .view-profile__container {
+        flex-direction: column;
+        align-items: center;
+
+        .view-profile-left__parent {
+            border: none;
+        }
+
+        .view-profile-right__parent {
+            border: none;
+            padding: 1rem;
+            min-width: 60%;
+            max-width: 80%;
+        }
+    }
+}

@@ -5,9 +5,17 @@
 export const environment = {
   production: false,
   timeout: 120000,
-  baseURI: 'http://localhost:8080',
-  localIP: 'http://192.168.1.20:8080'
-
+  backendHost: {
+    get() {
+      if (window && window.location.host.includes('localhost')) {
+        return 'http://localhost:8080'
+      }
+      return 'http://192.168.1.20:8080'
+    },
+    toString() {
+      return this.get();
+    }
+  }
 };
 
 /*

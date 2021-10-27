@@ -9,15 +9,16 @@ import { debounceTime, distinctUntilChanged, filter, map, tap } from 'rxjs/opera
 })
 export class SearchComponent {
 
-    @Output() onChage: EventEmitter<any> = new EventEmitter();
+    @Output() onInputChange: EventEmitter<any> = new EventEmitter();
 
     searchInput: string = '';
 
     searchInputHandler(newVal: any) {
-        this.onChage.emit(newVal);
+        this.onInputChange.emit(newVal);
     }
 
     onClear() {
         this.searchInput = '';
+        this.onInputChange.emit('');
     }
 }

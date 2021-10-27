@@ -33,7 +33,7 @@
             display: flex;
             margin: 0;
 
-            li {
+            &>li {
                 margin-left: 1.5rem;
                 letter-spacing: 0.12rem;
                 @include flexContainer(space-between, center);
@@ -42,19 +42,12 @@
                 transition: all .1s ease;
                 max-width: max-content;
 
-                .nav-label {
-                    display: none;
-                }
-
-                &:hover .nav-label {
-                    display: block;
-                }
-
-                .badge {
-                    top: -1rem;
+                &>.badge {
+                    top: -0.1rem;
                     z-index: 10;
-                    left: 0rem;
+                    left: 0.8rem;
                     font-size: 0.5rem;
+                    position: absolute;
                 }
 
                 .mat-icon {
@@ -101,7 +94,7 @@
                         @include flexContainer(flex-start, center);
                         padding-left: 1.5rem;
                         color: #000;
-                        font-weight: bold;
+                        font-weight: 400;
                         margin-left: 0;
                         min-width: 10rem;
 

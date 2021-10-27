@@ -1,14 +1,14 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { SessionService } from 'app/services/util/session.service';
-import { debounceTime, distinctUntilChanged, filter, tap } from 'rxjs/operators';
-import { of } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
+import { UserDetailsManager } from 'app/services/util/user-details.manager';
+import { slider } from './animations';
 
 @Component({
   selector: 'app-container',
   templateUrl: './container.component.html',
-  styleUrls: ['./container.component.scss']
+  styleUrls: ['./container.component.scss'],
 })
 export class ContainerComponent implements OnInit {
 
@@ -23,13 +23,16 @@ export class ContainerComponent implements OnInit {
   constructor(
     private _session: SessionService,
     public _router: Router,
-    private _actRoute: ActivatedRoute,
-    public _dialog: MatDialog
+    public _dialog: MatDialog,
+    private _userDeatailsManager: UserDetailsManager
   ) { }
 
 
   ngOnInit() {
     this.populateData();
+    this._userDeatailsManager.userDetails.subscribe(res => {
+      if (res) this.populateData();
+    })
   }
 
   populateData() {
@@ -50,6 +53,11 @@ export class ContainerComponent implements OnInit {
   toggleNightMode() {
     this.nightMode = !this.nightMode;
     document.body.classList.toggle('night-mode');
+  }
+
+
+  prepareRoute(outlet: RouterOutlet) {
+    return outlet && outlet.activatedRouteData && outlet.activatedRouteData['animation']
   }
 
 }

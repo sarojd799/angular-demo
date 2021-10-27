@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
-import { HttpInterceptor, HttpEvent, HttpRequest, HttpHandler, HttpErrorResponse } from '@angular/common/http';
+import { HttpInterceptor, HttpEvent, HttpRequest, HttpHandler, HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { environment as env } from 'src/environments/environment';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
 import { LoaderService } from '../util/loader.service';
 import { SessionService } from '../util/session.service';
 import { AuthenticationService } from '../auth/authentication.service';
-import { AUTH_API } from '../util/api.enum';
+import { AUTH_API } from '../auth/auth.api';
+import { USER_API } from '../backend/api/user.api';
+import { UserDetailsManager } from '../util/user-details.manager';
 
 @Injectable({ providedIn: 'root' })
 export class AJAXInterceptorService implements HttpInterceptor {
@@ -14,7 +16,8 @@ export class AJAXInterceptorService implements HttpInterceptor {
   constructor(
     private _loader: LoaderService,
     private _session: SessionService,
-    private _auth: AuthenticationService) { }
+    private _auth: AuthenticationService,
+    private _userManager: UserDetailsManager) { }
 
 
   handleError(err: HttpErrorResponse): Observable<any> {
@@ -24,6 +27,18 @@ export class AJAXInterceptorService implements HttpInterceptor {
       this._auth.logOutUser();
     }
     return of(err);
+  }
+
+  handleResponse(res: HttpEvent<any>) {
+    if (res instanceof HttpResponse) {
+      if (res.url && res.url.includes(USER_API.updateUserInfoURISnippet)) {
+        const user = this._session.getUserDetails();
+        const updatedUser = res.body;
+        this._userManager.settUserDetails(res.body, res.headers.get("Authorization"))
+      }
+    }
+    this._loader.hideLoader();
+    return res;
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -44,12 +59,11 @@ export class AJAXInterceptorService implements HttpInterceptor {
       reqMod = reqMod.clone({ headers: req.headers.set('Authorization', `Bearer ${authorization.token}`) });
     }
 
-    if (env.baseURI && window.location.host.includes("localhost")) {
-      reqMod = reqMod.clone({ url: env.baseURI + url })
-    } else {
-      reqMod = reqMod.clone({ url: env.baseURI.replace("localhost", "192.168.1.20") + url })
-    }
+    reqMod = reqMod.clone({ url: env.backendHost + url })
 
-    return next.handle(reqMod).pipe(tap(res => this._loader.hideLoader()), catchError(this.handleError.bind(this)))
+    return next.handle(reqMod).pipe(
+      map((event: HttpEvent<any>) => this.handleResponse(event)),
+      catchError(err => this.handleError(err))
+    );
   }
 }

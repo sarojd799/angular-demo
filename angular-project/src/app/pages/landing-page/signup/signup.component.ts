@@ -7,9 +7,7 @@ import { signupValidationMsg } from '../validation-messages';
 import { trigger, state, transition, animate, style } from '@angular/animations';
 import { AuthenticationService } from 'app/services/auth/authentication.service';
 
-//mat
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { dialogConfig } from '../lading-page-const';
+import { ToastrService } from 'app/services/util/toastr.utils';
 
 @Component({
   selector: 'app-signup',
@@ -44,7 +42,7 @@ export class SignUpComponent implements OnInit, AfterContentInit {
     private fb: FormBuilder,
     private validationUtils: ValidationUtils,
     private _auth: AuthenticationService,
-    private _snackBar: MatSnackBar
+    private _toastr: ToastrService,
   ) { }
 
   ngAfterContentInit() {
@@ -116,15 +114,15 @@ export class SignUpComponent implements OnInit, AfterContentInit {
       }
       this._auth.registerNewUser(payload).subscribe((res: any) => {
         if (res && res.email) {
-          this._snackBar.open("Registeration successfull", undefined, dialogConfig)
+          this._toastr.success("Registeration successfull")
           this.signupForm.reset();
           this.signupForm.markAsPristine();
           this.signupForm.markAsUntouched();
           this.signUpFormErr = {};
         } else {
-          this._snackBar.open("Error occurred while registering user.", undefined, dialogConfig)
+          this._toastr.error("Error occurred while registering user.")
         }
-      }, () => this._snackBar.open("Error occurred while registering user.", undefined, dialogConfig))
+      }, () => this._toastr.error("Error occurred while registering user."))
     }
   }
 

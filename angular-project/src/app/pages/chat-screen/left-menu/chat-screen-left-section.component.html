@@ -1,20 +1,18 @@
-<div class="chat-screen-left">
+<div id="chat-left-component-container">
     <div class="search-friends-container">
-        <div class="search-box">
-            <input type="text" autocorrect="off" class="form-control" (keyup)="filterPrevChat($event)"
-                placeholder="search contact">
-            <mat-icon class="user-search-icon">search</mat-icon>
-        </div>
+        <search-component (onInputChange)="filterUsersToChat($event)"></search-component>
     </div>
-    <div class="prev-chat-list">
-        <div class="prev-chat-user__parent" *ngFor="let user of prevChatFiltered" (click)="selectUserToChat(user)">
-            <mat-icon>account_circle</mat-icon>
-            <div class="prev-chat-user">
+    <div class="prev-chat-list-container__parent">
+        <div class="prev-chat-user-detail__parent" *ngFor="let user of prevChatFiltered"
+            (click)="selectUserToChat(user)">
+            <div class="user-icon__component" [imageURL]="user.imgURL"></div>
+            <div class="prev-chat-user-labels__parent">
                 <p>
-                    {{user.username}}
+                    {{user.email}}
                 </p>
-                <p>
-                    {{user.chat}}
+                <p class="status chat-status-label" [class.online]="user.status ==='ONLINE'"
+                    [class.offline]="user.status ==='OFFLINE'">
+                    {{user.status}}
                 </p>
             </div>
         </div>

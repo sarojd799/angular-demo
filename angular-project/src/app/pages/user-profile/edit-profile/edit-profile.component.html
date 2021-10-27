@@ -1,0 +1,214 @@
+<div class="edit-profile-container">
+    <div class="edit-profile-left__parent">
+        <div class="profile-picture-container">
+            <div class="img-container">
+                <div [ngStyle]="{ 'background-image': 'url(' + imgHost+currentUser?.imgURL + ')'}"
+                    *ngIf="currentUser?.imgURL" class="user-profile"></div>
+                <mat-icon (click)="img.click()" *ngIf="!currentUser?.imgURL">
+                    account_circle
+                </mat-icon>
+                <input type="file" #img accept="image/*" (change)="onFileChanged($event)" [hidden]="true" />
+            </div>
+            <div class="profile-change-btn__parent text-center">
+                <button class="btn profile-pic-change-btn" [disabled]="!currentUser?.imgURL" (click)="img.click()">
+                    Update profile picture
+                </button>
+            </div>
+        </div>
+        <div class="profile-links-container__parent">
+            <ul class="list-group">
+                <li class="list-group item">Profile</li>
+                <li class="list-group item">Settings</li>
+            </ul>
+        </div>
+    </div>
+    <div class="edit-profile-right__parent">
+        <div class="edit-profile-header">
+            <p class="h5 mx-0 text-left text-nowrap">
+                Personal Information
+            </p>
+            <button class="edit-btn btn web-edit-btn" (click)="profileForm.ngSubmit.emit()">
+                Update
+            </button>
+        </div>
+        <div class="edit-profile-form-container">
+            <form #profileForm="ngForm" (ngSubmit)="updateProfile(editProfileForm)">
+                <div class="personal-information" [formGroup]="editProfileForm">
+                    <div class="basic-info__parent">
+                        <div class="pi-left">
+                            <div class="first-name__parent">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>
+                                        First Name
+                                    </mat-label>
+                                    <input type="text" autocomplete="off" formControlName="firstName" matInput
+                                        name="firstName" placeholder="Enter first name" autocomplete="off"
+                                        spellcheck="false">
+                                    <mat-error *ngIf="profileFormErrors.firstName">
+                                        {{profileFormErrors.firstName}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="middle-name__parent">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>
+                                        Middle Name
+                                    </mat-label>
+                                    <input type="text" autocomplete="off" formControlName="middleName" matInput
+                                        name="middleName" placeholder="Enter middle name" autocomplete="off"
+                                        spellcheck="false">
+                                    <mat-error *ngIf="profileFormErrors.middleName">
+                                        {{profileFormErrors.middleName}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="last-name__parent">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>
+                                        Last Name
+                                    </mat-label>
+                                    <input type="text" autocomplete="off" formControlName="lastName" matInput
+                                        name="lastName" placeholder="Enter last name" autocomplete="off"
+                                        spellcheck="false">
+                                    <mat-error *ngIf="profileFormErrors.lastName">
+                                        {{profileFormErrors.lastName}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="dob__parent">
+                                <mat-form-field appearance="fill">
+                                    <mat-label>Choose a date</mat-label>
+                                    <input matInput [matDatepicker]="picker" formControlName="dob">
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <!--middle name-->
+                        <div class="pi-right">
+                            <div class="gender__parent">
+                                <label>
+                                    Gender&nbsp;
+                                </label>
+                                <mat-radio-group formControlName="gender" aria-label="Select an option">
+                                    <mat-radio-button value="male">
+                                        Male
+                                    </mat-radio-button>
+                                    <mat-radio-button value="female">
+                                        Female
+                                    </mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                            <div class="email__parent">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>
+                                        Email
+                                    </mat-label>
+                                    <input type="text" autocomplete="off" formControlName="email" matInput name="email"
+                                        placeholder="Enter email" autocomplete="off" spellcheck="false">
+                                    <mat-error *ngIf="profileFormErrors.email">
+                                        {{profileFormErrors.email}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="phone__parent">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>
+                                        Phone
+                                    </mat-label>
+                                    <input type="text" autocomplete="off" formControlName="phone" matInput name="phone"
+                                        placeholder="Enter 10 digit phone number" autocomplete="off" spellcheck="false">
+                                    <mat-error *ngIf="profileFormErrors.phone">
+                                        {{profileFormErrors.phone}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="h5 address-details-heading heading">
+                        <p class="h5">
+                            Address Details
+                        </p>
+                    </div>
+                    <div class="address__parent" formGroupName="address">
+                        <div class="address-left">
+                            <div class="country__parent">
+                                <mat-form-field appearance="fill">
+                                    <mat-label>Country</mat-label>
+                                    <input type="text" autocomplete="off" (focus)="focus('country')"
+                                        (blur)="validateCountry()" spellcheck="false" placeholder="select country"
+                                        matInput formControlName="country" [matAutocomplete]="conAuto">
+                                    <mat-autocomplete #conAuto="matAutocomplete">
+                                        <mat-option *ngFor="let country of filteredCountries | async"
+                                            [value]="country.countryName">
+                                            {{country.countryName}}
+                                        </mat-option>
+                                    </mat-autocomplete>
+                                </mat-form-field>
+                            </div>
+                            <!--state-parent-->
+                            <div class="state__parent">
+                                <mat-form-field appearance="fill">
+                                    <mat-label>State</mat-label>
+                                    <input type="text" autocomplete="off" (focus)="focus('state')" spellcheck="false"
+                                        placeholder="select state" (blur)="validateState()" matInput
+                                        formControlName="state" [matAutocomplete]="stateAuto">
+                                    <mat-autocomplete #stateAuto="matAutocomplete">
+                                        <mat-option *ngFor="let state of filteredStates | async"
+                                            [value]="state.stateName">
+                                            {{state.stateName}}
+                                        </mat-option>
+                                    </mat-autocomplete>
+                                </mat-form-field>
+                            </div>
+                            <!--city-parent-->
+                            <div class="city__parent">
+                                <mat-form-field appearance="fill">
+                                    <mat-label>City</mat-label>
+                                    <input type="text" autocomplete="off" (focus)="focus('city')" spellcheck="false"
+                                        placeholder="select city" matInput formControlName="city"
+                                        [matAutocomplete]="cityAuto">
+                                    <mat-autocomplete #cityAuto="matAutocomplete">
+                                        <mat-option *ngFor="let city of filteredCities | async" [value]="city.cityName">
+                                            {{city.cityName}}
+                                        </mat-option>
+                                    </mat-autocomplete>
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <div class="address-right">
+                            <div class="pincode__parent">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>
+                                        Pincode
+                                    </mat-label>
+                                    <input type="text" autocomplete="off" formControlName="pincode" matInput
+                                        name="pincode" placeholder="Enter pincode" autocomplete="off"
+                                        spellcheck="false">
+                                    <mat-error *ngIf="profileFormErrors.pincode">
+                                        {{profileFormErrors.pincode}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="address-line__parent">
+                                <mat-form-field class="example-full-width" appearance="fill">
+                                    <mat-label>Address details</mat-label>
+                                    <textarea autocomplete="off" formControlName="addressLine" matInput
+                                        placeholder="Enter adddress or landmark" rows="5"></textarea>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center mob-edit-btn__parent">
+                    <button class="edit-btn btn" type="submit">
+                        Update
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

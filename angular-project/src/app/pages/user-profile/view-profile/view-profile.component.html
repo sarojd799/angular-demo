@@ -1,0 +1,111 @@
+<div class="view-profile__container">
+    <div class="view-profile-left__parent">
+        <div class="img-container">
+            <div class="user-icon__component" [imageURL]="profile.imgURL"></div>
+        </div>
+    </div>
+    <div class="view-profile-right__parent">
+        <div class="basic-info__parent">
+            <p class="h5 heading">Basic Informations</p>
+            <div class="details__parent">
+                <!--first name-->
+                <div class="detail">
+                    <label for="">First Name</label>
+                    <p for="">
+                        {{profile.firstName || 'Not available'}}
+                    </p>
+                </div>
+                <!--middle name-->
+                <div class="detail" *ngIf="profile.middleName">
+                    <label for="">Middle Name</label>
+                    <p for="">
+                        {{profile.middleName || 'Not available'}}
+                    </p>
+                </div>
+                <!--last name-->
+                <div class="detail">
+                    <label for="">Last Name</label>
+                    <p for="">
+                        {{profile.lastName || 'Not available'}}
+                    </p>
+                </div>
+
+                <!--gender-->
+                <div class="detail">
+                    <label for="">Gender</label>
+                    <p for="">
+                        {{profile.gender || 'Not available'}}
+                    </p>
+                </div>
+
+                <!--dob-->
+                <div class="detail">
+                    <label for="">DOB</label>
+                    <p for="">
+                        {{profile.dob || 'Not available'}}
+                    </p>
+                </div>
+
+                <!--email-->
+                <div class="detail">
+                    <label for="">Email</label>
+                    <p for="">
+                        {{profile.email || 'Not available'}}
+                    </p>
+                </div>
+
+                <!--dob-->
+                <div class="detail">
+                    <label for="">Phone</label>
+                    <p for="">
+                        {{profile.phone || 'Not available'}}
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="address-info__parent">
+            <p class="h5 heading">
+                Address Informations
+            </p>
+            <div class="details__parent">
+                <!--country-->
+                <div class="detail">
+                    <label for="">Country</label>
+                    <p for="">
+                        {{profile.address?.country || 'Not available'}}
+                    </p>
+                </div>
+                <!--state-->
+                <div class="detail">
+                    <label for="">State</label>
+                    <p for="">
+                        {{profile.address?.state || 'Not available'}}
+                    </p>
+                </div>
+                <!--city-->
+                <div class="detail">
+                    <label for="">City</label>
+                    <p for="">
+                        {{profile.address?.city || 'Not available'}}
+                    </p>
+                </div>
+
+                <!--pincode-->
+                <div class="detail">
+                    <label for="">Pincode</label>
+                    <p for="">
+                        {{profile.address?.pincode || 'Not available'}}
+                    </p>
+                </div>
+
+                <!--addressLine-->
+                <div class="detail">
+                    <label for="">AddressLine</label>
+                    <p for="">
+                        {{profile.address?.addressLine || 'Not available'}}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -4,9 +4,11 @@ import { ElementRef, Injectable } from "@angular/core";
 @Injectable({ providedIn: 'root' })
 export default class HTMLUtils {
 
-    scrollToBottomOfDiv(elem: ElementRef<any>) {
+    scrollToBottomOfDiv(elem: ElementRef<any>, id: string = '') {
         if (elem && elem.nativeElement) {
-            elem.nativeElement.scrollTop = elem.nativeElement.scrollHeight;
+            setTimeout(() => {
+                elem.nativeElement.scrollTop = elem.nativeElement.scrollHeight - elem.nativeElement.clientHeight;
+            })
         }
     }
 }

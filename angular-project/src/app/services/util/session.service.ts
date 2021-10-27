@@ -14,9 +14,32 @@ export class SessionService {
     this.storage[this.persistenceKey] = JSON.stringify(sessionData);
   }
 
+  saveUserDetails(details: any) {
+    this.appendValueToKey(this.authKey, { user: details });
+    this.updateUserName(details.email);
+  }
+
+  updateUserName(username: string) {
+    this.appendValueToKey(this.authKey, { username });
+  }
+
+  updateSessionToken(token: string) {
+    this.appendValueToKey(this.authKey, { token })
+  }
+
+  getUserDetails(): any {
+    const auth = this.getItem(this.authKey) || {};
+    return auth.user;
+  }
+
   getUserName() {
     const auth = this.getItem(this.authKey) || {};
     return auth.username;
+  }
+
+  getUserId() {
+    const auth = this.getItem(this.authKey) || {};
+    return auth.user && auth.user.userDetailsId;
   }
 
   getItem(key: String) {
@@ -27,6 +50,16 @@ export class SessionService {
 
   removeItem(key: String) {
     if (this.storage) this.storage.removeItem(`${key}`);
+  }
+
+  appendValueToKey(primaryKey: string, obj: any) {
+    let data = this.storage[this.persistenceKey]; //angular app
+    if (!data) this.initStorage();
+    data = JSON.parse(this.storage[this.persistenceKey]); //angular app
+    if (Reflect.get(data, primaryKey)) { //authkey
+      data[primaryKey] = { ...data[primaryKey], ...obj }
+    }
+    this.storage[this.persistenceKey] = JSON.stringify(data);
   }
 
   addItem(key: String, value: any) {
@@ -41,6 +74,8 @@ export class SessionService {
     this.storage[this.persistenceKey] = JSON.stringify({});
   }
 
-  get storage() { return localStorage }
+  get storage() {
+    return sessionStorage;
+  }
   get authKey() { return 'Authentication' }
 }

@@ -84,7 +84,8 @@
               "browserTarget": "angular-project:build:production"
             },
             "development": {
-              "browserTarget": "angular-project:build:development"
+              "browserTarget": "angular-project:build:development",
+              "disableHostCheck": true
             }
           },
           "defaultConfiguration": "development"

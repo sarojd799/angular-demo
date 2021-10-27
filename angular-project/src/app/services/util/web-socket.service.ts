@@ -1,11 +1,10 @@
-import { Injectable } from '@angular/core';
 import * as SockJS from 'sockjs-client';
 import * as StompJS from 'stompjs';
-import { environment as env } from 'src/environments/environment';
+import { environment as env, environment } from 'src/environments/environment';
 
 export class WebSocketUtils {
 
-    webSocketEndPoint = 'http://localhost:8080/ws'
+    webSocketEndPoint = `${environment.backendHost}/ws`
     topic = '/topic/connect/'
     stompClient: any;
 
@@ -17,9 +16,6 @@ export class WebSocketUtils {
         errorHandler: (arg: any) => void,
         messageHandler: (arg: any) => void) {
 
-        if (window && !window.location.host.includes('localhost')) {
-            this.webSocketEndPoint = env.localIP + '/ws'
-        }
         console.log('Initializing web socket');
         this.roomID = roomID;
         let ws = new SockJS(this.webSocketEndPoint);

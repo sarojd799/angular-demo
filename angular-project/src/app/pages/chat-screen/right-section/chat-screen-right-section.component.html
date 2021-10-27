@@ -1,44 +1,69 @@
-<div class="active-chat-section">
-    <div class="active-chat-header">
-        <mat-icon>account_circle</mat-icon>
-        <div class="active-user">
-            <p class="name">
-                {{_selectedUser?.username}}
-            </p>
-            <p class="status">
-                Online
-            </p>
+<div class="active-chat-panel-container">
+
+    <!--active chat header-->
+    <div class="active-chat-panel-header">
+        <div class="active_chat_user_details__parent">
+            <div class="active-chat-user-icon__parent">
+                <div class="user-icon__component" [imageURL]="_selectedUser?.imgURL"
+                    style="height: 2.5rem;width:2.5rem;font-size:2.5rem;"></div>
+            </div>
+            <div class="active-chat-user-name-and-status__parent">
+                <p class="name">
+                    {{_selectedUser?.email || '-'}}
+                </p>
+                <p class="status chat-status-label" [class.online]="_selectedUser?.status ==='ONLINE'"
+                    [class.offline]="_selectedUser?.status ==='OFFLINE'">
+                    {{_selectedUser?.status || '-' }}
+                </p>
+            </div>
         </div>
-        <div class="chat-opt">
-            <mat-icon>more_vert</mat-icon>
+        <div class="chat-options-component">
+            <button class="btn btn-secondary" id="chat-opt-dd" (click)="settingMenuOpened = !settingMenuOpened">
+                <mat-icon>more_vert</mat-icon>
+            </button>
+
+            <div class="list-group" [class.show]="settingMenuOpened">
+                <div class="list-group-item back-btn chat-mob-back-btn" (click)="onBackClick()">
+                    <span class="fa fa-arrow-circle-left"></span>&nbsp;
+                    Back
+                </div>
+                <div class="list-group-item">
+                    <span class="fa fa-trash"></span>&nbsp;
+                    Clear Chat
+                </div>
+            </div>
         </div>
     </div>
-    <div #chatBody class="active-chat-body">
-        <div *ngFor="let eachMsg of messageCollection" class="each-message__parent">
-            <div class="text-left inner-content__parent" [class.text-left]="currentUser !== eachMsg.sender"
-                [class.text-right]="currentUser === eachMsg.sender">
-                <div class="inner-content">
-                    <p>
-                        <label for="">
-                            {{eachMsg.sender}}
-                        </label>
-                        <span>
-                            {{eachMsg.timeStamp | date:'medium' }}
-                        </span>
-                    </p>
-                    <p>
-                        {{eachMsg.message}}
-                    </p>
-                </div>
+
+    <!--active-chat-body-->
+    <div id="chat-body" #chatBody class="active-chat-body__parent">
+        <div *ngFor="let eachMsg of messageCollection" [class.right]="currentUser === eachMsg.sender"
+            class="each-message__parent">
+            <div class="inner-content__parent" [class.sender]="currentUser !== eachMsg.sender">
+                <p class="name-and-time">
+                    <label for="">
+                        {{eachMsg.sender}}
+                    </label>
+                    <span>
+                        {{eachMsg.timeStamp | date:'medium' }}
+                    </span>
+                </p>
+                <p class="text-left message">
+                    {{eachMsg.message}}
+                </p>
             </div>
         </div>
 
     </div>
-    <div class="active-chat-footer">
-        <textarea [(ngModel)]="chatInput" placeholder="write something..." name="" id="" cols="30" rows="10"
-            class="chat-input"></textarea>
-        <button class="btn send-btn" (click)="sendMessage(chatInput)" [disabled]="!connected">
-            Send
+    <div class="active-chat-footer__parent">
+        <textarea [disabled]="!_selectedUser?.email" [(ngModel)]="chatInput" placeholder="write something..." name=""
+            id="" cols="30" rows="6" class="chat-input"></textarea>
+        <button [disabled]="!_selectedUser?.email" class="btn send-btn" (click)="sendMessage(chatInput)"
+            [disabled]="!connected">
+            <mat-icon>
+                send
+            </mat-icon>
+            &nbsp;Send
         </button>
     </div>
 </div>

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ThemePalette } from '@angular/material/core';
 import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
+import { RouterOutlet } from '@angular/router';
+import { delay } from 'rxjs/operators';
 import { IdleManagerService } from './services/util/idle-manager';
 import { LoaderService } from './services/util/loader.service';
 

@@ -1,0 +1,30 @@
+.chat-status-label {
+    position: relative;
+    padding: 0 0.8 rem;
+    margin-top: 0.1 rem;
+    text-transform: lowercase;
+    letter-spacing: 0.0725rem;
+    padding-left: 0.8rem !important;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        left: 0;
+        border-radius: 50%;
+        height: 0.5rem;
+        width: 0.5rem;
+        z-index: 4;
+    }
+
+    &.online::before {
+        background: mediumseagreen;
+        color: mediumseagreen;
+    }
+
+    &.offline::before {
+        background: red;
+        color: red;
+    }
+}

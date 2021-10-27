@@ -9,6 +9,7 @@ import { RouterModule } from '@angular/router';
 
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { AuthGuard } from './services/route-guards/auth.guard';
+import { UserDetailsGuard } from './services/route-guards/user-details.guard';
 import { UnauthorizedComponent } from './pages/unauthorized/unauthorized.component';
 import { LandingPageModule } from './pages/landing-page/landing-page.module';
 import { SessionService } from './services/util/session.service';
@@ -23,7 +24,7 @@ import { ChatModule } from './pages/chat-screen/chat.module';
 import { ContainerModule } from './pages/container/container.module';
 import { HomeModule } from './pages/home/home.module';
 import { SearchResultModule } from './pages/search-result/search-result.module';
-import { EditProfileModule } from './pages/edit-profile/edit-profile.module';
+import { UserProfileModule } from './pages/user-profile/user-profile.module';
 import { WebSocketUtils } from './services/util/web-socket.service';
 import HTMLUtils from './services/util/htmlUtils';
 
@@ -37,24 +38,26 @@ import HTMLUtils from './services/util/htmlUtils';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    LandingPageModule,
     RouterModule,
     MatProgressSpinnerModule,
     HttpClientModule,
 
     //Feature-modules-start
+    LandingPageModule,
     ChatModule,
     AdminModule,
     HomeModule,
     SearchResultModule,
-    EditProfileModule,
+    UserProfileModule,
     ContainerModule,
-    //Feature-modules-end
+    //-Feature-modules-end
+
     AppRoutingModule,
     NgIdleKeepaliveModule.forRoot()
   ],
   providers: [
     AuthGuard,
+    UserDetailsGuard,
     SessionService,
     AuthenticationService,
     { provide: HTTP_INTERCEPTORS, useClass: AJAXInterceptorService, multi: true },
@@ -64,8 +67,6 @@ import HTMLUtils from './services/util/htmlUtils';
 
   ],
   bootstrap: [AppComponent],
-  exports: [
-    AppRoutingModule
-  ]
+  exports: [AppRoutingModule]
 })
 export class AppModule { }

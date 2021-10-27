@@ -1,0 +1,38 @@
+{
+    "userId": 1,
+    "firstName": "test",
+    "lastName": "user",
+    "email": "user@gmail.com",
+    "imgURL": ".....",
+    "gender": "male",
+    "dob": "UTC date",
+    "wallPosts": [
+        111,
+        222,
+        333
+    ],
+    "connections": [
+        5,
+        6,
+        7,
+        8
+    ],
+    "messages": [
+        101,
+        102,
+        103,
+        104
+    ],
+    "address": {
+        "country": "IN",
+        "state": "MH",
+        "city": "pune",
+        "addressLine": "......",
+        "pincode": "411014"
+    },
+    "maritalStatus": "single | married",
+    "status": "online | offline | typing",
+    "roles": [
+        "USER"
+    ]
+}

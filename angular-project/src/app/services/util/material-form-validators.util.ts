@@ -7,7 +7,7 @@ import { ErrorStateMatcher } from "@angular/material/core";
 */
 class RequiredFieldsMatchers implements ErrorStateMatcher {
     isErrorState(c: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
-        const formSubmitted = (form && form.submitted);
+        const formSubmitted = (form && form.submitted && !form.pristine);
         if (c && c.parent && c.parent !== c.root) { //Email
             const controls = Object.values(c.parent.controls);
             if (c === controls[controls.length - 1]) {

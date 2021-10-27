@@ -18,9 +18,12 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatRadioModule } from '@angular/material/radio';
 import { RouterModule } from '@angular/router';
 import { MatSelectModule } from '@angular/material/select';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 //ngx
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -47,7 +50,10 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     RouterModule,
     BsDropdownModule,
     MatRadioModule,
-    FormsModule
+    FormsModule,
+    MatAutocompleteModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
 
 })

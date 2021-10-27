@@ -3,9 +3,12 @@
 @import "../../common";
 
 $search-header:#213067;
+$search-result-color:#BECFFF;
 
 .search-page-container {
-    min-height: calc(100vh - 8rem);
+    min-height: calc(100vh - 6.5rem);
+    padding-bottom: 1rem;
+    height: auto;
 
     .search-page-header__parent {
         background-color: $search-header;
@@ -37,19 +40,20 @@ $search-header:#213067;
     }
 
     .search-result {
-        border: 1px solid lightgray;
+        border: 1px solid $search-result-color;
         color: #000;
-        background: white;
+        background: $search-result-color;
         margin-top: 1rem;
         min-height: 6rem;
         min-width: 38rem;
         padding: 1rem 2rem;
+        border-radius: 0.3rem;
         @include flexContainer(flex-start, center);
 
-        .mat-icon {
-            font-size: 3.5rem;
-            height: 3.5rem;
-            width: 3.5rem;
+        .user-icon__component {
+            height: 3rem;
+            width: 3rem;
+            font-size: 3rem;
         }
 
         .details {
@@ -90,6 +94,53 @@ $search-header:#213067;
                     font-size: 0.7rem;
                     height: 0.7rem;
                     width: 0.8rem;
+                }
+            }
+        }
+    }
+
+
+    //==========================search result=================
+    .search-page-result__parent {
+        .has-search-result__parent {
+            max-width: 45rem;
+            margin: auto;
+        }
+    }
+}
+
+
+@media only screen and(min-width:600px) {
+    .search-page-result__parent {
+        min-height: 15rem;
+    }
+}
+
+@media only screen and(max-width:600px) {
+    .search-page-result__parent {
+        padding: 1rem;
+
+        .search-result {
+            min-width: 90%;
+            max-width: 95%;
+            margin: 1rem;
+            padding: 2.5rem 1rem;
+            display: flex;
+            flex-direction: column;
+
+            .details {
+                text-align: center;
+            }
+
+            .action {
+                text-align: center;
+
+                .view-profile-btn {
+                    margin: 0;
+                }
+
+                .view-profile-btn+button {
+                    margin-left: 1rem;
                 }
             }
         }

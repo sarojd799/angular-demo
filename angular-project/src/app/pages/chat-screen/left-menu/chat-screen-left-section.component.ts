@@ -1,7 +1,7 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 
 @Component({
-    selector: 'chat-left-section',
+    selector: '#chat-screen-left',
     templateUrl: './chat-screen-left-section.component.html',
     styleUrls: ['../chat.component.scss']
 })
@@ -10,15 +10,13 @@ export class ChatScreenLeftSectionComponent implements OnInit {
 
     @Output() onUserSelect: EventEmitter<any> = new EventEmitter();
 
-    @Input() prevChatList: any;
+    @Input()
+    set prevChatList(val: any) {
+        this.prevChats = val;
+        this.prevChatFiltered = val;
+    }
 
-    prevChats = [
-        'Dev', 'test', 'Chinmay Panda', 'Ashish Sahu', 'Jaggu Panda', 'Sourav Guru', 'Pratyush padhi', 'Suraj Gagrai'
-    ].map(u => ({
-        username: u,
-        chat: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptatem, aspernatur soluta dicta reiciendis, quae recusandae eaque in aut ab libero nam! Ratione error nemo doloremque dolores harum deleniti sint neque.'
-    }))
-
+    prevChats = []
 
     prevChatFiltered: any = [];
 
@@ -26,18 +24,16 @@ export class ChatScreenLeftSectionComponent implements OnInit {
 
     constructor() { }
 
-    ngOnInit(): void {
-        this.prevChatFiltered = this.prevChats;
-    }
+    ngOnInit(): void { }
 
-    filterPrevChat(event: any) {
-        if (!event.target.value) {
+    filterUsersToChat(value: any) {
+        if (!value) {
             this.prevChatFiltered = this.prevChats;
-            return;
+        } else {
+            this.prevChatFiltered = this.prevChats.filter((c: any) => {
+                return c.email.toUpperCase().includes(value.toUpperCase())
+            })
         }
-        this.prevChatFiltered = this.prevChats.filter((item: any) => {
-            return item.username.toUpperCase().includes(event.target.value.toUpperCase())
-        })
     }
 
 

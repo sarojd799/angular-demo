@@ -9,16 +9,19 @@
             <ul class="nav-list-items__parent">
                 <li routerLink="/home/searchUsers" routerLinkActive="active-header-link">
                     <mat-icon> search</mat-icon>
-                    <span class="nav-label">Search Users</span>
+                    <span class="nav-label">Search</span>
                 </li>
                 <li routerLink="/home/chat" routerLinkActive="active-header-link">
                     <mat-icon> chat_bubble_outline</mat-icon>
                     <span class="badge  badge-secondary">0</span>
                     <span class="nav-label">Messages</span>
                 </li>
-                <li routerLinkActive="active-header-link">
+                <li routerLinkActive="active-header-link" class="notifications-link">
                     <mat-icon>notifications_none</mat-icon>
                     <span class="badge badge-secondary">0</span>
+                    <span class="nav-label">
+                        notifications
+                    </span>
                 </li>
                 <!--dropdown-->
                 <li class="dropdown user-opts-dd" (click)="userOptDropdownToggled = true"
@@ -33,6 +36,10 @@
                         <li class="list-group-item" role="link" (click)="navigate('/home/profile')">
                             <mat-icon>account_circle</mat-icon>
                             Profile
+                        </li>
+                        <li class="list-group-item" role="link" (click)="navigate('/home/profile')">
+                            <mat-icon>key</mat-icon>
+                            Change password
                         </li>
                         <li class="list-group-item" logoutLink>
                             <span class="fa fa-sign-out"></span>
@@ -52,7 +59,7 @@
             <ng-container [ngTemplateOutlet]="loginMenu"></ng-container>
         </div>
         <div class="right-section__parent section">
-            <router-outlet></router-outlet>
+            <router-outlet #outlet="outlet"></router-outlet>
         </div>
     </main>
     <!--footer-->

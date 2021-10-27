@@ -5,10 +5,8 @@ import { AuthenticationService } from 'src/app/services/auth/authentication.serv
 import { ValidationUtils } from 'src/app/services/util/validation.service';
 import { trigger, state, transition, animate, style } from '@angular/animations';
 
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { LOGIN_ERROR_CODES } from './login.const';
 import { EventEmitter } from '@angular/core';
-import { dialogConfig } from '../lading-page-const';
 import { RequiredFieldsMatchers } from 'src/app/services/util/material-form-validators.util';
 import { loginValidations } from '../validation-messages';
 import { debounceTime } from 'rxjs/operators';
@@ -58,7 +56,6 @@ export class LoginComponent implements OnInit, DoCheck {
     private fb: FormBuilder,
     private router: Router,
     private _auth: AuthenticationService,
-    private _snackBar: MatSnackBar,
     private validationUtils: ValidationUtils,
     private _socialAuth: SocialAuthService) { }
 
@@ -72,22 +69,20 @@ export class LoginComponent implements OnInit, DoCheck {
   }
 
   authenticate(payload: any) {
+    this.loginErrorMsg = '';
     this._auth.loginUser(payload).subscribe(res => {
-      console.log({ res });
       if (res.message === LOGIN_ERROR_CODES.invalidCredentials) {
         this.loginErrorMsg = 'Invalid username or password';
       } else {
         this.onDialogEvent.emit('CLOSE');
-        console.log({ name: payload.username })
         this._auth.saveUserCredentials({ ...res, username: payload.username });
         if (res.roles && res.roles.includes('ADMIN')) {
           this.router.navigateByUrl('admin/adminDashboard')
         } else {
           this.router.navigate(['home', 'posts'])
         }
-        this._snackBar.open(`Welcome ${payload.username}`, undefined, dialogConfig);
       }
-    })
+    }, err => this.loginErrorMsg = 'Error occurred')
   }
 
   ngOnInit(): void {
