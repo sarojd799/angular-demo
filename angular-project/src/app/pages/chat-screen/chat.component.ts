@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit, SimpleChange, ViewEncapsulation } from '@
 import { UserService } from 'app/services/backend/user.service';
 import { SessionService } from 'app/services/util/session.service';
 import { interval, Observable, Subscription } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-chat',
@@ -48,7 +49,7 @@ export class ChatComponent implements OnInit, OnDestroy {
 
 
   registerInterval() {
-    this.interval = interval(2000).subscribe(res => this.getAllConnections(this._session.getUserDetails()));
+    this.interval = interval(5000).pipe(take(5)).subscribe(res => this.getAllConnections(this._session.getUserDetails()));
   }
 
   ngOnInit() {

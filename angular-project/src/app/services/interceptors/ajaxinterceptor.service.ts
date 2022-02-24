@@ -2,17 +2,19 @@ import { Injectable } from '@angular/core';
 import { HttpInterceptor, HttpEvent, HttpRequest, HttpHandler, HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { environment as env } from 'src/environments/environment';
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError, map, retryWhen, switchMap, tap } from 'rxjs/operators';
 import { LoaderService } from '../util/loader.service';
 import { SessionService } from '../util/session.service';
 import { AuthenticationService } from '../auth/authentication.service';
 import { AUTH_API } from '../auth/auth.api';
 import { USER_API } from '../backend/api/user.api';
 import { UserDetailsManager } from '../util/user-details.manager';
+import { ThrowStmt } from '@angular/compiler';
 
 @Injectable({ providedIn: 'root' })
 export class AJAXInterceptorService implements HttpInterceptor {
 
+  count: number = 0;
   constructor(
     private _loader: LoaderService,
     private _session: SessionService,
@@ -20,11 +22,30 @@ export class AJAXInterceptorService implements HttpInterceptor {
     private _userManager: UserDetailsManager) { }
 
 
-  handleError(err: HttpErrorResponse): Observable<any> {
+  getReqWithAuth(req: HttpRequest<any>) {
+    const authorization = this._session.getItem(this._session.authKey) || {};
+    return req.clone({ headers: req.headers.set('Authorization', `Bearer ${authorization.token}`) });
+  }
+
+  handleError(err: HttpErrorResponse, next: HttpHandler, request: HttpRequest<any>): Observable<any> {
     this._loader.hideLoader();
-    if (err.status === 401 || err.status === 403) {
-      console.log('logout called')
-      this._auth.logOutUser();
+
+    if (err.status === 403) {
+
+      if (!request.url.includes("refreshToken")) {
+        return this._auth.refreshToken().pipe(
+          switchMap((res: any) => {
+            this._auth.refreshTokenResponse(res);
+            return next.handle(this.getReqWithAuth(request))
+          }),
+          catchError(errorAfterRefresh => {
+            if (errorAfterRefresh.status === 403) this._auth.logOutUser();
+            return of(err);
+          }));
+      } else {
+        this._auth.logOutUser();
+      }
+
     }
     return of(err);
   }
@@ -32,8 +53,6 @@ export class AJAXInterceptorService implements HttpInterceptor {
   handleResponse(res: HttpEvent<any>) {
     if (res instanceof HttpResponse) {
       if (res.url && res.url.includes(USER_API.updateUserInfoURISnippet)) {
-        const user = this._session.getUserDetails();
-        const updatedUser = res.body;
         this._userManager.settUserDetails(res.body, res.headers.get("Authorization"))
       }
     }
@@ -46,6 +65,8 @@ export class AJAXInterceptorService implements HttpInterceptor {
     this._loader.showLoader();
     let url = req.url;
     let reqMod = req.clone();
+
+    reqMod = reqMod.clone({ withCredentials: true })
 
     const authRequired = !(AUTH_API.getAllURI().some(u => req.url.includes(u)));
     if (!req.headers.has('Access-Control-Allow-Origin')) {
@@ -63,7 +84,7 @@ export class AJAXInterceptorService implements HttpInterceptor {
 
     return next.handle(reqMod).pipe(
       map((event: HttpEvent<any>) => this.handleResponse(event)),
-      catchError(err => this.handleError(err))
+      catchError(err => this.handleError(err, next, reqMod))
     );
   }
 }

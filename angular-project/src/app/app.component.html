@@ -1,6 +1,33 @@
 <!--where main pages will load-->
 <router-outlet></router-outlet>
 
+
+<div class="timeout-dialog__parent" [hidden]="!showTimeoutDialog">
+    <div class="timrout-dialog">
+        <div class="modal-header panel-primary">
+            Alert!!!
+        </div>
+        <div class="modal-body">
+            <p>
+                You will be logged out in {{timeout}} seconds due to inactivity.
+            </p>
+            <p>
+                Do you wish to extend session ?
+            </p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" (click)="extendSession()">
+                YES
+            </button>
+            <button class="btn btn-default" (click)="endUserSession()">
+                NO
+            </button>
+        </div>
+    </div>
+</div>
+
+
+
 <!--spinner container-->
 <div id="spinner-parent" class="spinner-container" *ngIf="showSpinner">
     Loading...

@@ -38,6 +38,7 @@
         min-width: 20rem;
         max-width: 27%;
         transition: left 1s ease;
+        min-height: 36rem;
 
         &.animate {
             animation: chat-toggle 1s ease;
@@ -229,6 +230,18 @@
                     overflow-y: auto;
                     height: calc(100vh - 18rem);
                     padding: 1rem;
+                    min-height: 25rem;
+
+                    .key-up {
+                        width: 100%;
+                        text-align: center;
+
+                        span {
+                            font-weight: normal;
+                            letter-spacing: 0.065rem;
+                            padding: 0.5rem;
+                        }
+                    }
 
                     .each-message__parent {
                         min-height: 6rem;
@@ -244,8 +257,14 @@
                             margin-bottom: 1rem;
                             background-color: #fff;
                             color: #000;
-                            padding: 1rem 2rem;
+                            padding: 1rem 1.6rem;
                             word-break: break-all;
+                            border-radius: 0.7rem;
+
+                            p {
+                                margin: 0;
+
+                            }
 
                             &.sender {
                                 background: #4a4a4a;
@@ -254,16 +273,24 @@
 
                             .name-and-time {
                                 display: flex;
+                                align-items: center;
+                                margin-bottom: 0.5rem;
 
                                 label {
                                     flex: 65%;
                                     letter-spacing: 0.065rem;
                                     font-weight: 400;
+                                    font-size: 0.8rem;
+
+                                    &::first-letter {
+                                        text-transform: uppercase;
+                                    }
+
                                 }
 
                                 span {
                                     margin-left: 1rem;
-                                    font-size: 0.6rem;
+                                    font-size: 1rem;
                                 }
                             }
 

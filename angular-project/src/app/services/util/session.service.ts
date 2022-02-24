@@ -27,6 +27,11 @@ export class SessionService {
     this.appendValueToKey(this.authKey, { token })
   }
 
+  getSessionToken() {
+    const auth = this.getItem(this.authKey) || {};
+    return auth.token;
+  }
+
   getUserDetails(): any {
     const auth = this.getItem(this.authKey) || {};
     return auth.user;

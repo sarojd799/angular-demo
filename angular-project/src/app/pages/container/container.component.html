@@ -70,6 +70,10 @@
 
 <ng-template #loginMenu>
     <ul class="mobile-nav-items__parent">
+        <li class="mob-nav-item">
+            <mat-icon>account_circle</mat-icon>
+            <span class="username-label">{{loggedInuser}}</span>
+        </li>
         <li class="mob-nav-item" routerLink="/home/searchUsers" routerLinkActive="active-mob-nav">
             <mat-icon>search</mat-icon>
             <span class="nav-label">

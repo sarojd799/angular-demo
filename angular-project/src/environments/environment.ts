@@ -4,7 +4,19 @@
 
 export const environment = {
   production: false,
-  timeout: 120000,
+  timeout: 5 * 60 * 1000,
+  refreshTokenTimeout: 120000,
+  webSocketHost: {
+    get() {
+      if (window && window.location.host.includes('localhost')) {
+        return 'ws://localhost:8080'
+      }
+      return 'ws://192.168.1.20:8080'
+    },
+    toString() {
+      return this.get();
+    }
+  },
   backendHost: {
     get() {
       if (window && window.location.host.includes('localhost')) {

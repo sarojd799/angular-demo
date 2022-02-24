@@ -27,9 +27,9 @@
         border-color: #4350b1;
         background-color: #4350b1;
         border-radius: 31px;
-        padding: 0.5rem 1rem;
-        font-size: 18px;
-        letter-spacing: 2px;
+        padding: 1rem 2rem;
+        font-size: 0.8rem;
+        letter-spacing: 0.130rem;
         margin-top: 1rem;
     }
 }
@@ -97,8 +97,9 @@
 .signup-form {
 
     .mat-icon:not(:first-of-type) {
-         cursor: pointer;
+        cursor: pointer;
     }
+
     .form-submit-btns-container {
         margin-top: 15px;
     }

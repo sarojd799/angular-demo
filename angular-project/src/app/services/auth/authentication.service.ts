@@ -3,12 +3,18 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { SocialAuthService } from 'angularx-social-login';
 import { Observable, of } from 'rxjs';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
 import { AUTH_API } from './auth.api';
 import { SessionService } from '../util/session.service';
 
+import { Subject } from 'rxjs';
+
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
+
+  tokenExpired = false;
+
+  timeoutValue: Subject<number> = new Subject();
 
   constructor(
     private _httpc: HttpClient,
@@ -16,6 +22,10 @@ export class AuthenticationService {
     private _session: SessionService,
     private _socialAuth: SocialAuthService) {
     this.registerLoaderOnNavigation()
+  }
+
+  initSession(timeout: number) {
+    this.timeoutValue.next(timeout);
   }
 
   registerLoaderOnNavigation() {
@@ -40,23 +50,43 @@ export class AuthenticationService {
   }
 
   logOutUser() {
+    const user = this._session.getUserDetails();
+    if (user) {
+      this.logoutUser(user.userDetailsId).subscribe()
+    }
     this.clearUserCredentials()
     this._router.navigate(['index'])
-    //this._socialAuth.signOut();
   }
 
 
   loginUser(payload: any): Observable<any> {
-    return this._httpc.post(AUTH_API.loginUserURI, payload);
+    return this._httpc.post(AUTH_API.loginUserURI, payload).pipe(
+      tap((res: any) => {
+        if (res.timeout && res.timeout > 0) {
+          this.initSession(res.timeout);
+        }
+      })
+    )
   }
 
   registerNewUser(newAuth: any) {
     return this._httpc.post(AUTH_API.registerNewUserURI, newAuth);
   }
 
+  logoutUser(userId: number) {
+    return this._httpc.post(AUTH_API.logoutUserURI(userId), {})
+  }
 
-}
-function checkUserByEmailURI(name: string): string {
-  throw new Error('Function not implemented.');
+
+  refreshTokenResponse(res: any) {
+    this.tokenExpired = false;
+    this._session.updateSessionToken(res.accessToken);
+  }
+
+  refreshToken() {
+    return this._httpc.get(AUTH_API.refreshTokenURI());
+  }
+
+
 }
 

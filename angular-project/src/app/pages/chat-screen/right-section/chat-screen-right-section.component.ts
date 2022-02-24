@@ -55,8 +55,8 @@ export class ChatScreenRightSectionComponent implements OnInit {
 
     connect() {
         if (this._selectedUser) {
+            const currUser = this._session.getUserDetails();
             this._wsUtils.connect(
-                `101`,
                 this.onConnected.bind(this),
                 this.onConError.bind(this),
                 this.onMessageReceived.bind(this)
@@ -65,23 +65,47 @@ export class ChatScreenRightSectionComponent implements OnInit {
     }
 
 
+    recipientKeyUp = false;
+    onKeyUp() {
+        this._wsUtils.onKeyUp({ receipent: this._selectedUser.email });
+    }
+
+    onReceipentKeyUp() {
+        this.recipientKeyUp = true;
+    }
+
+    onBlur() {
+        this._wsUtils.onBlur({ receipent: this._selectedUser.email })
+    }
+
+    onReceipentBlur() {
+        this.recipientKeyUp = false;
+    }
+
+
     sendMessage(msg: string) {
         if (msg && msg.trim()) {
-            this._wsUtils.send({
+            const message = {
                 messageId: Math.random(),
                 message: msg,
                 sender: this._session.getUserName(),
-                receipent: this._selectedUser,
+                receipent: this._selectedUser.email,
                 timeStamp: new Date()
-            });
-
+            }
+            this._wsUtils.send(message);
+            this.messageCollection.push(message);
             this._htmlUtils.scrollToBottomOfDiv(this.chatBody, 'chat-body');
             this.chatInput = ''
         }
     }
 
-    onConnected(sendHandler: () => void) {
+    /**
+     * @description Method will be used to assign subscriptions
+     */
+    onConnected() {
         this.connected = true;
+        this._wsUtils.registerKeyEvents(this.onReceipentKeyUp.bind(this), this.onReceipentBlur.bind(this))
+
     }
 
     onMessageReceived(message: any) {
@@ -95,8 +119,8 @@ export class ChatScreenRightSectionComponent implements OnInit {
     }
 
     onConError(err: any) {
-        alert('ERROR ' + JSON.stringify(err));
-        console.error(err);
+        alert('ERROR occurred' + JSON.stringify(err));
+        console.log(err);
     }
 
     ngOnDestroy() {

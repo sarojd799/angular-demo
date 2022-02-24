@@ -11,9 +11,15 @@
                 <p class="name">
                     {{_selectedUser?.email || '-'}}
                 </p>
-                <p class="status chat-status-label" [class.online]="_selectedUser?.status ==='ONLINE'"
+                <p *ngIf="!recipientKeyUp" class="status chat-status-label"
+                    [class.online]="_selectedUser?.status ==='ONLINE'"
                     [class.offline]="_selectedUser?.status ==='OFFLINE'">
                     {{_selectedUser?.status || '-' }}
+                </p>
+                <p *ngIf="recipientKeyUp" class="status chat-status-label"
+                    [class.online]="_selectedUser?.status ==='ONLINE'"
+                    [class.offline]="_selectedUser?.status ==='OFFLINE'">
+                    typing...
                 </p>
             </div>
         </div>
@@ -41,23 +47,23 @@
             class="each-message__parent">
             <div class="inner-content__parent" [class.sender]="currentUser !== eachMsg.sender">
                 <p class="name-and-time">
-                    <label for="">
+                    <label for="" class="mx-0">
                         {{eachMsg.sender}}
                     </label>
-                    <span>
-                        {{eachMsg.timeStamp | date:'medium' }}
-                    </span>
                 </p>
                 <p class="text-left message">
                     {{eachMsg.message}}
+                </p>
+                <p style="margin-top: 1rem;">
+                    <small>{{eachMsg.timeStamp | date:'medium'}}</small>
                 </p>
             </div>
         </div>
 
     </div>
     <div class="active-chat-footer__parent">
-        <textarea [disabled]="!_selectedUser?.email" [(ngModel)]="chatInput" placeholder="write something..." name=""
-            id="" cols="30" rows="6" class="chat-input"></textarea>
+        <textarea (keyup)="onKeyUp()" (blur)="onBlur()" [disabled]="!_selectedUser?.email" [(ngModel)]="chatInput"
+            placeholder="write something..." name="" id="" cols="30" rows="6" class="chat-input"></textarea>
         <button [disabled]="!_selectedUser?.email" class="btn send-btn" (click)="sendMessage(chatInput)"
             [disabled]="!connected">
             <mat-icon>
