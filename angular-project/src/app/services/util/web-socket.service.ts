@@ -3,6 +3,7 @@ import * as StompJS from 'stompjs';
 import { environment as env, environment } from 'src/environments/environment';
 import { SessionService } from './session.service';
 import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 
 @Injectable()
 export class WebSocketUtils {
@@ -15,66 +16,66 @@ export class WebSocketUtils {
     stompClient: any;
 
     events: any = [];
-
-    messageHandler: any;
     errorHandler: any;
+    connected: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
     endPointPrefix = '/spring-security-mvc-socket';
     chatEndPoints: any = {
         register: `${this.endPointPrefix}/registerForChat`,
         send: `${this.endPointPrefix}/secured/room`,
         onKeyUp: `${this.endPointPrefix}/chatEvent/type`,
-        blur: `${this.endPointPrefix}/chatEvent/blur`,
+        blur: `${this.endPointPrefix}/chatEvent/blur`
     }
 
 
     connect(
         //events: any,
         connectedCB: (arg: any) => void,
-        errorCB: (arg: any) => void,
-        successCB: (arg: any) => void) {
-
-        this.messageHandler = successCB;
+        errorCB: (arg: any) => void) {
         this.errorHandler = errorCB;
-
         //this.events = events;
-        let ws = new SockJS(this.webSocketEndPoint);
+        const url = this.webSocketEndPoint;
+        const currUser = this._session.getUserDetails();
+        let ws = new SockJS(url);
+        console.log(ws);
 
         this.stompClient = StompJS.over(ws);
-        const currUser = this._session.getUserDetails();
         this.stompClient.connect({
             login: currUser.email
         }, (frame: any) => {
-
             connectedCB(this.send);
-            let url = this.stompClient.ws._transport.url;
-            console.log("transport url: " + this.stompClient.ws._transport.url);
-            url = url.replace(`${env.webSocketHost}/spring-security-mvc-socket/secured/room/`, "");
-            url = url.replace("/websocket", "");
-            url = url.replace(/^[0-9]+\//, "");
-            const sessionId = url.slice(url.lastIndexOf("/") + 1, url.length);
-            console.log("Your current session is: " + sessionId);
-            this.subscribeToEvents();
+            this.connected.next(true);
+            this.printSessionID();
             this.registerUser(this._session.getUserDetails());
-        }, this.errorHandler)
+        }, (error: any) => {
+            this.connected.next(false);
+            errorCB(error);
+        })
     }
 
 
-    /**
-     * @description Method will be used to subscribe to all the events from server
-     */
-    subscribeToEvents() {
-        this.stompClient.subscribe('/user/queue/register', (sdkEvent: any) => alert("user registered"))
-        this.stompClient.subscribe('/user/queue/message', (sdkEvent: any) => this.messageHandler(sdkEvent))
+    printSessionID() {
+        let url = this.stompClient.ws._transport.url;
+        console.log("transport url: " + this.stompClient.ws._transport.url);
+        url = url.replace(`${env.webSocketHost}/spring-security-mvc-socket/secured/room/`, "");
+        url = url.replace("/websocket", "");
+        url = url.replace(/^[0-9]+\//, "");
+        const sessionId = url.slice(url.lastIndexOf("/") + 1, url.length);
+        console.log("Your current session is: " + sessionId);
+    }
 
+    subscribeToAppEvents() {
+        //for app notifications    
+    }
+
+    subscribeToChatMessages(messageHandler: (message: any) => void) {
+        this.stompClient.subscribe('/user/queue/message', (sdkEvent: any) => messageHandler(sdkEvent))
     }
 
     registerKeyEvents(keyUpHandler: any, blurHandler: any) {
         this.stompClient.subscribe('/user/queue/keyup', (sdkEvent: any) => keyUpHandler())
         this.stompClient.subscribe('/user/queue/blur', (sdkEvent: any) => blurHandler())
     }
-
-
 
     /**
      * @description To register principal with email

@@ -43,16 +43,19 @@
 
     <!--active-chat-body-->
     <div id="chat-body" #chatBody class="active-chat-body__parent">
-        <div *ngFor="let eachMsg of messageCollection" [class.right]="currentUser === eachMsg.sender"
+        <div *ngFor="let eachMsg of messageCollection" [class.right]="currentUser.userDetailsId === eachMsg.senderId"
             class="each-message__parent">
-            <div class="inner-content__parent" [class.sender]="currentUser !== eachMsg.sender">
+            <div class="inner-content__parent" [class.sender]="currentUser.userDetailsId !== eachMsg.senderId">
                 <p class="name-and-time">
-                    <label for="" class="mx-0">
-                        {{eachMsg.sender}}
+                    <label for="" class="mx-0" *ngIf="currentUser.userDetailsId == eachMsg.senderId">
+                        {{currentUser.email}}
+                    </label>
+                    <label for="" class="mx-0" *ngIf="currentUser.userDetailsId !== eachMsg.senderId">
+                        {{_selectedUser?.email}}
                     </label>
                 </p>
                 <p class="text-left message">
-                    {{eachMsg.message}}
+                    {{eachMsg.messageContent}}
                 </p>
                 <p style="margin-top: 1rem;">
                     <small>{{eachMsg.timeStamp | date:'medium'}}</small>

@@ -1,7 +1,9 @@
 import { Component, ElementRef, Input, OnChanges, OnInit, Output, EventEmitter, SimpleChanges, ViewChild } from '@angular/core';
+import { ChatBEService } from 'app/services/backend/chat.service';
 import HTMLUtils from 'app/services/util/htmlUtils';
 import { SessionService } from 'app/services/util/session.service';
 import { WebSocketUtils } from 'app/services/util/web-socket.service';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: '#chat-screen-right',
@@ -14,27 +16,32 @@ export class ChatScreenRightSectionComponent implements OnInit {
 
     _selectedUser: any;
 
-    currentUser: string = '';
+    currentUser: any;
+
+    connected: boolean = false;
 
     @ViewChild('chatBody') chatBody!: ElementRef<any>;
-
-
-    @Input()
-    set selectedUser(value: any) {
-        if (this.connected) this._wsUtils.disconnect();
-        if (this._session.getUserName() !== value) {
-            this._selectedUser = value;
-            this.connect();
-        }
-    }
-
-    connected = false;
 
     messageCollection: any[] = [];
 
     chatInput = '';
 
     settingMenuOpened = false;
+
+    recipientKeyUp = false;
+
+    @Input()
+    set selectedUser(value: any) {
+        if (this._session.getUserName()) {
+            this._selectedUser = value;
+        }
+    }
+
+
+    initChatConfig() {
+        this._wsUtils.connected.subscribe(flag => this.onConnected(flag));
+        this.currentUser = this._session.getUserDetails();
+    }
 
     onBackClick() {
         this.settingMenuOpened = false;
@@ -45,27 +52,23 @@ export class ChatScreenRightSectionComponent implements OnInit {
     constructor(
         private _wsUtils: WebSocketUtils,
         private _session: SessionService,
-        private _htmlUtils: HTMLUtils
+        private _htmlUtils: HTMLUtils,
+        private _chatService: ChatBEService
     ) { }
 
 
     ngOnInit() {
-        this.currentUser = this._session.getUserName();
+        this.initChatConfig();
+        this.getChatMessages()
     }
 
-    connect() {
-        if (this._selectedUser) {
-            const currUser = this._session.getUserDetails();
-            this._wsUtils.connect(
-                this.onConnected.bind(this),
-                this.onConError.bind(this),
-                this.onMessageReceived.bind(this)
-            );
-        }
+    getChatMessages() {
+        this.messageCollection = []
+        this._chatService.getSavedChats(this.currentUser.userDetailsId, this._selectedUser.userDetailsId).subscribe(res => {
+            this.messageCollection = [...res];
+        })
     }
 
-
-    recipientKeyUp = false;
     onKeyUp() {
         this._wsUtils.onKeyUp({ receipent: this._selectedUser.email });
     }
@@ -84,12 +87,15 @@ export class ChatScreenRightSectionComponent implements OnInit {
 
 
     sendMessage(msg: string) {
+        const loggedInUser = this._session.getUserDetails()
         if (msg && msg.trim()) {
             const message = {
                 messageId: Math.random(),
-                message: msg,
-                sender: this._session.getUserName(),
+                messageContent: msg,
+                sender: loggedInUser.email,
                 receipent: this._selectedUser.email,
+                senderId: loggedInUser.userDetailsId,
+                receipentId: this._selectedUser.userDetailsId,
                 timeStamp: new Date()
             }
             this._wsUtils.send(message);
@@ -102,10 +108,12 @@ export class ChatScreenRightSectionComponent implements OnInit {
     /**
      * @description Method will be used to assign subscriptions
      */
-    onConnected() {
-        this.connected = true;
-        this._wsUtils.registerKeyEvents(this.onReceipentKeyUp.bind(this), this.onReceipentBlur.bind(this))
-
+    onConnected(flag: boolean) {
+        this.connected = flag;
+        if (flag) {
+            this._wsUtils.subscribeToChatMessages(this.onMessageReceived.bind(this));
+            this._wsUtils.registerKeyEvents(this.onReceipentKeyUp.bind(this), this.onReceipentBlur.bind(this));
+        }
     }
 
     onMessageReceived(message: any) {
@@ -117,15 +125,4 @@ export class ChatScreenRightSectionComponent implements OnInit {
             this.messageCollection.push(body);
         }
     }
-
-    onConError(err: any) {
-        alert('ERROR occurred' + JSON.stringify(err));
-        console.log(err);
-    }
-
-    ngOnDestroy() {
-        this._wsUtils.disconnect();
-        this.connected = false;
-    }
-
 }
